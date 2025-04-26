@@ -1,0 +1,287 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.form-container {
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(center);
+  @include min-height(100vh);
+}
+
+.contact-container {
+  @include background-color($white);
+  @include padding($spacing-4xl);
+  @include border-radius($border-radius-md);
+  @include box-shadow($shadow-md);
+  @include max-width(900px);
+  @include width(100%);
+
+  h2 {
+    @include font-size($font-size-2xl);
+    @include margin-bottom(8px);
+    @include color($text-color);
+    @include text-align(center);
+  }
+
+  p {
+    @include font-size($font-size-base);
+    @include margin-bottom($spacing-xl);
+    @include color($text-color);
+    @include text-align(center);
+  }
+}
+
+.label-form {
+  @include font-size($font-size-base);
+  @include color($text-color);
+}
+
+.input-form {
+  @include width(100%);
+  @include padding($spacing-md);
+  @include margin-top($spacing-sm);
+  @include margin-bottom($spacing-lg);
+  @include border(1px, solid, $border-color);
+  @include border-radius($border-radius-sm);
+  @include font-size($font-size-base);
+
+  &[disabled] {
+    @include background-color(#e9ecef);
+    @include opacity(0.7);
+    @include cursor(not-allowed);
+  }
+}
+
+.btnForm {
+  @include background-color($primary-color);
+  @include border(none);
+  @include color($white);
+  @include font-size($font-size-lg);
+  @include padding($spacing-md);
+  @include width(100%);
+  @include border-radius($border-radius-sm);
+  @include cursor(pointer);
+  @include transition(background-color);
+
+  &:hover {
+    @include background-color($hover-color);
+  }
+}
+
+.alert {
+  @include padding($spacing-md);
+  @include margin-bottom($spacing-lg);
+  @include border(1px, solid, transparent);
+  @include border-radius($border-radius-sm);
+}
+
+.alert-success {
+  @include color(#155724);
+  @include background-color(#d4edda);
+  @include border-color(#c3e6cb);
+}
+
+.alert-danger {
+  @include color(#721c24);
+  @include background-color(#f8d7da);
+  @include border-color(#f5c6cb);
+}
+
+.form-group {
+  @include margin-bottom($spacing-md);
+}
+
+.contact {
+  @include container;
+  @include padding($spacing-xl, 0);
+
+  h1 {
+    @include margin-bottom($spacing-xl);
+    @include font-size($font-size-2xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+    @include text-align(center);
+  }
+}
+
+.contact__content {
+  @include display(flex);
+  @include gap($spacing-xl);
+
+  @include respond-to(md) {
+    @include flex-direction(column);
+  }
+}
+
+.contact__info {
+  @include flex(1);
+  @include padding($spacing-lg);
+  @include background-color($white);
+  @include border-radius($border-radius-md);
+  @include box-shadow($shadow-sm);
+
+  h2 {
+    @include margin(0);
+    @include margin-bottom($spacing-lg);
+    @include font-size($font-size-xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+}
+
+.contact__info-item {
+  @include display(flex);
+  @include align-items(center);
+  @include gap($spacing-md);
+  @include margin-bottom($spacing-lg);
+
+  &:last-child {
+    @include margin-bottom(0);
+  }
+
+  .icon {
+    @include width(40px);
+    @include height(40px);
+    @include display(flex);
+    @include align-items(center);
+    @include justify-content(center);
+    @include background-color($light-gray);
+    @include border-radius($border-radius-sm);
+    @include color($primary-color);
+    @include font-size($font-size-lg);
+  }
+
+  .details {
+    h3 {
+      @include margin(0);
+      @include margin-bottom($spacing-xs);
+      @include font-size($font-size-base);
+      @include font-weight($font-weight-medium);
+      @include color($text-color);
+    }
+
+    p {
+      @include margin(0);
+      @include font-size($font-size-base);
+      @include color($gray);
+    }
+
+    a {
+      @include color($primary-color);
+      @include text-decoration(none);
+      @include transition(color);
+
+      &:hover {
+        @include color($hover-color);
+      }
+    }
+  }
+}
+
+.contact__form {
+  @include flex(1);
+  @include padding($spacing-lg);
+  @include background-color($white);
+  @include border-radius($border-radius-md);
+  @include box-shadow($shadow-sm);
+
+  h2 {
+    @include margin(0);
+    @include margin-bottom($spacing-lg);
+    @include font-size($font-size-xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+}
+
+.form-group {
+  @include margin-bottom($spacing-lg);
+
+  label {
+    @include display(block);
+    @include margin-bottom($spacing-sm);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-medium);
+    @include color($text-color);
+  }
+
+  input,
+  textarea {
+    @include width(100%);
+    @include padding($spacing-sm);
+    @include border(1px, solid, $border-color);
+    @include border-radius($border-radius-sm);
+    @include font-size($font-size-base);
+    @include transition(border-color);
+
+    &:focus {
+      @include outline(none);
+      @include border-color($primary-color);
+    }
+  }
+
+  textarea {
+    @include min-height(150px);
+    @include resize(vertical);
+  }
+
+  &.error {
+    input,
+    textarea {
+      @include border-color($danger-color);
+    }
+
+    .error-message {
+      @include margin-top($spacing-xs);
+      @include font-size($font-size-sm);
+      @include color($danger-color);
+    }
+  }
+}
+
+.contact__submit {
+  @include width(100%);
+  @include padding($spacing-md);
+  @include background-color($primary-color);
+  @include color($white);
+  @include border(none);
+  @include border-radius($border-radius-sm);
+  @include font-size($font-size-base);
+  @include font-weight($font-weight-medium);
+  @include cursor(pointer);
+  @include transition(background-color);
+
+  &:hover {
+    @include background-color($hover-color);
+  }
+
+  &:disabled {
+    @include opacity(0.7);
+    @include cursor(not-allowed);
+  }
+}
+
+.contact__success {
+  @include text-align(center);
+  @include padding($spacing-xl, 0);
+
+  .icon {
+    @include font-size($font-size-4xl);
+    @include color($success-color);
+    @include margin-bottom($spacing-lg);
+  }
+
+  h2 {
+    @include margin(0);
+    @include margin-bottom($spacing-md);
+    @include font-size($font-size-xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+
+  p {
+    @include margin(0);
+    @include font-size($font-size-base);
+    @include color($gray);
+  }
+} 

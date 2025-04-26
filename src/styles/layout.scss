@@ -1,0 +1,51 @@
+@import './variables';
+@import './mixins';
+
+.layout {
+  @include min-height(100vh);
+  @include display(flex);
+  @include flex-direction(column);
+  @include width(100%);
+}
+
+.main-content {
+  @include justify-content(center);
+  @include flex(1);
+  @include width(100%);
+  @include max-width(100%);
+  @include padding(0);
+}
+
+.container {
+  @include width(100%);
+  @include max-width(100%);
+  @include margin(0);
+  @include padding(0);
+}
+
+.row {
+  @include display(flex);
+  @include flex-wrap(wrap);
+  @include margin(0);
+  @include width(100%);
+}
+
+.main-content__menu {
+  @include flex(0, 0, 25%);
+  @include max-width(25%);
+  @include padding(0, 15px);
+}
+
+.main-content__content {
+  @include flex(0, 0, 75%);
+  @include max-width(75%);
+  @include padding(0, 15px);
+}
+
+@include media-breakpoint-down(md) {
+  .main-content__menu,
+  .main-content__content {
+    @include flex(0, 0, 100%);
+    @include max-width(100%);
+  }
+} 

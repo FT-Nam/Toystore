@@ -1,0 +1,257 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.main-content {
+  @include margin-top($spacing-3xl);
+
+  &__menu-list {
+    @include list-style-type(none);
+    @include padding(0);
+    @include margin(0);
+    @include background-color(#f9f8ff);
+    @include padding($spacing-lg);
+    @include height(auto);
+    @include box-shadow($shadow-sm);
+  }
+
+  &__menu-item {
+    @include margin($spacing-sm, 0);
+    @include border(1px, solid, #f1f1f1);
+    @include border-width(0, 0, 1px, 0);
+  }
+
+  &__menu-title {
+    @include font-family($font-family-title);
+    @include padding($spacing-xs, $spacing-lg);
+    @include border-radius($border-radius-sm);
+    @include font-size(1.3em);
+    @include font-weight($font-weight-bold);
+    @include color(#1D1568);
+    @include text-align(center);
+  }
+
+  &__menu-item a {
+    @include text-decoration(none);
+    @include color($text-color);
+    @include font-weight($font-weight-medium);
+    @include display(block);
+    @include padding($spacing-sm);
+    @include border-radius($border-radius-sm);
+    @include transition(background-color);
+
+    &:hover {
+      @include background-color($primary-color);
+      @include color($white);
+    }
+  }
+
+  &__product {
+    &--title {
+      @include padding($spacing-lg);
+      @include width(100%);
+
+      span {
+        @include font-weight($font-weight-semibold);
+        @include font-size($font-size-3xl);
+        @include color(#1D1568);
+        @include font-family($font-family-title);
+        @include text-align(center);
+        @include display(block);
+      }
+    }
+  }
+}
+
+.product {
+  &__list {
+    @include list-style-type(none);
+  }
+
+  &__list-item {
+    @include position(relative);
+    @include padding($spacing-md);
+    @include border-radius($border-radius-lg);
+    @include background-color($white);
+    @include width(23%);
+    @include margin($spacing-xs);
+    @include transition(transform, box-shadow);
+
+    &:hover {
+      @include transform(translateY(-5px));
+      @include box-shadow($shadow-md);
+    }
+  }
+
+  &__img-wrap {
+    @include position(relative);
+    @include display(inline-block);
+    @include overflow(hidden);
+    @include line-height(0);
+
+    img {
+      @include width(fit-content);
+      @include max-width(100%);
+      @include height(210px);
+      @include margin(auto);
+      @include backface-visibility(hidden);
+      @include transition(transform);
+
+      .product__list-item:hover & {
+        @include transform(scale(1.05));
+      }
+    }
+  }
+
+  .discount-label {
+    @include position(absolute);
+    @include top($spacing-md);
+    @include right($spacing-md);
+    @include background-color(#ff6b00d9);
+    @include color($white);
+    @include padding($spacing-xs, $spacing-md);
+    @include font-size($font-size-sm);
+    @include font-weight($font-weight-bold);
+    @include border-radius($border-radius-sm);
+    @include line-height(1);
+    @include display(inline-block);
+    @include transform(translate(10px, -10px));
+    @include box-shadow($shadow-sm);
+    @include text-transform(uppercase);
+    @include z-index(1);
+  }
+
+  &__title-wrap a {
+    @include text-decoration(none);
+  }
+
+  &__title-name {
+    @include color(#423838);
+    @include font-family($font-family-rubik);
+    @include font-size($font-size-xl);
+    @include font-weight($font-weight-medium);
+    @include margin(2px, 0, $spacing-md);
+    @include padding(0);
+    @include text-align(center);
+    @include height(58px);
+    @include display(-webkit-box);
+    @include webkit-box-orient(vertical);
+    @include webkit-line-clamp(2);
+    @include overflow(hidden);
+    @include text-overflow(ellipsis);
+    @include line-height(1.5em);
+    @include max-height(3em);
+  }
+
+  &__price-wrap {
+    @include margin-bottom($spacing-sm);
+    @include width(100%);
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-sm);
+  }
+
+  &__price-original {
+    @include text-decoration(line-through);
+    @include color(#888);
+    @include font-size($font-size-sm);
+  }
+
+  &__price-discount {
+    @include color($primary-color);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-bold);
+  }
+
+  &__price--no-discount {
+    @include font-size($font-size-lg);
+    @include color($primary-color);
+    @include text-align(center);
+    @include width(100%);
+    @include font-weight($font-weight-bold);
+  }
+
+  &__button-wrap {
+    @include text-align(center);
+    @include margin-top($spacing-sm);
+  }
+
+  .add-to-cart-btn {
+    @include background-color($primary-color);
+    @include color($white);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-semibold);
+    @include border(none);
+    @include padding($spacing-sm, $spacing-md);
+    @include border-radius($border-radius-lg);
+    @include cursor(pointer);
+    @include transition(background-color);
+
+    &:hover {
+      @include background-color($hover-color);
+    }
+  }
+
+  .out-of-stock-btn {
+    @include background-color(#d6d6d6);
+    @include color(#a0a0a0);
+    @include padding($spacing-sm, $spacing-xl);
+    @include border(none);
+    @include font-size($font-size-base);
+    @include border-radius($border-radius-lg);
+    @include cursor(not-allowed);
+    @include transition(background-color, color);
+  }
+
+  &__see-more-wrap {
+    @include text-align(center);
+    @include margin-top($spacing-xl);
+  }
+
+  .see-more-btn {
+    @include background-color(transparent);
+    @include color($primary-color);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-semibold);
+    @include border(2px, solid, $primary-color);
+    @include padding($spacing-sm, $spacing-lg);
+    @include border-radius($border-radius-2xl);
+    @include cursor(pointer);
+    @include transition(all);
+    @include display(inline-flex);
+    @include align-items(center);
+    @include text-decoration(none);
+
+    span {
+      @include margin-left($spacing-sm);
+    }
+
+    &:hover {
+      @include color($hover-color);
+      @include border-color($hover-color);
+      @include box-shadow(0 0 10px rgba($primary-color, 0.6), 0 0 3px rgba($primary-color, 0.4));
+    }
+  }
+
+  .icon-caret {
+    @include margin-left($spacing-sm);
+    @include transform(rotate(-90deg));
+  }
+}
+
+@media (max-width: $breakpoint-xl) {
+  .product__list-item {
+    @include flex(0, 0, calc(33.333% - 14px));
+  }
+}
+
+@media (max-width: $breakpoint-lg) {
+  .product__list-item {
+    @include flex(0, 0, calc(50% - 10px));
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .product__list-item {
+    @include flex(0, 0, 100%);
+  }
+} 

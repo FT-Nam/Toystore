@@ -1,0 +1,829 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.home {
+  @include width(100%);
+  @include max-width(100%);
+  @include margin(0);
+  @include padding(0);
+
+  &__container {
+    @include width(100%);
+    @include margin(0);
+    @include padding(0);
+  }
+
+  &__row {
+    @include display(flex);
+    @include width(100%);
+    @include margin(0);
+  }
+
+  &__sidebar {
+    @include flex(0, 0, 25%);
+    @include max-width(25%);
+    @include padding(20px);
+    @include background-color($light-gray);
+  }
+
+  &__content {
+    @include flex(0, 0, 75%);
+    @include max-width(75%);
+    @include padding(20px);
+  }
+
+  &__banner {
+    @include position(relative);
+    @include width(100%);
+    @include height(500px);
+    @include overflow(hidden);
+
+    &-image {
+      @include width(100%);
+      @include height(100%);
+      @include object-fit(cover);
+    }
+
+    &-content {
+      @include position(absolute);
+      @include top(50%);
+      @include left(10%);
+      @include transform(translateY(-50%));
+      @include max-width(500px);
+      @include color($white);
+      @include z-index(1);
+
+      h1 {
+        @include font-family("Baloo Tamma 2", Sans-serif);
+        @include font-size(48px);
+        @include font-weight($font-weight-bold);
+        @include line-height(1.2);
+        @include margin-bottom($spacing-md);
+        @include text-transform(uppercase);
+      }
+
+      p {
+        @include font-size(18px);
+        @include line-height(1.6);
+        @include margin-bottom($spacing-lg);
+      }
+
+      .btn-shop {
+        @include display(inline-block);
+        @include padding($spacing-md, $spacing-xl);
+        @include background-color($primary-color);
+        @include color($white);
+        @include border-radius($border-radius-lg);
+        @include font-size(16px);
+        @include font-weight($font-weight-bold);
+        @include text-decoration(none);
+        @include transition(all 0.3s ease);
+
+        &:hover {
+          @include background-color($hover-color);
+          @include transform(translateY(-2px));
+        }
+      }
+    }
+  }
+
+  &__products {
+    @include margin-top($spacing-xl);
+
+    &-title {
+      @include font-family("Baloo Tamma 2", Sans-serif);
+      @include font-size(32px);
+      @include font-weight($font-weight-bold);
+      @include text-align(center);
+      @include margin-bottom($spacing-xl);
+      @include text-transform(uppercase);
+      @include color($text-color);
+    }
+
+    &-grid {
+      @include display(grid);
+      @include grid-template-columns(repeat(4, 1fr));
+      @include gap($spacing-lg);
+
+      @include respond-to(lg) {
+        @include grid-template-columns(repeat(3, 1fr));
+      }
+
+      @include respond-to(md) {
+        @include grid-template-columns(repeat(2, 1fr));
+      }
+
+      @include respond-to(sm) {
+        @include grid-template-columns(1fr);
+      }
+    }
+  }
+}
+
+.container {
+  @include width(100%);
+  @include max-width(1400px);
+  @include margin(0, auto);
+  @include padding(0, 15px);
+}
+
+.row {
+  @include display(flex);
+  @include flex-wrap(wrap);
+  @include margin(0, -15px);
+}
+
+.main-content__menu {
+  @include flex(0, 0, 25%);
+  @include max-width(25%);
+  @include padding(0, 15px);
+}
+
+.main-content__content {
+  @include flex(0, 0, 75%);
+  @include max-width(75%);
+  @include padding(0, 15px);
+}
+
+.product-card {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  &__image {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+
+    .discount-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff4d4f;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 14px;
+      z-index: 1;
+    }
+  }
+
+  &__content {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    &-title {
+      color: #333;
+      text-decoration: none;
+      margin-bottom: 10px;
+      display: block;
+
+      .product-name {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 0;
+        line-height: 1.4;
+        height: 44px; /* Limit to 2 lines (1.4 * 16 * 2) */
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+      }
+
+      &:hover {
+        color: #cf102d;
+      }
+    }
+
+    &-price {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      &-current {
+        font-weight: bold;
+        font-size: 18px;
+        color: #cf102d;
+      }
+
+      &-old {
+        color: #999;
+        text-decoration: line-through;
+        font-size: 14px;
+      }
+    }
+
+    &-button {
+      margin-top: auto;
+      background-color: #cf102d;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #b80021;
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.discount-badge {
+  @include position(absolute);
+  @include top($spacing-sm);
+  @include right($spacing-sm);
+  @include background-color($primary-color);
+  @include color($white);
+  @include padding($spacing-xs, $spacing-sm);
+  @include border-radius($border-radius-sm);
+  @include font-size(12px);
+  @include font-weight($font-weight-bold);
+  @include z-index(1);
+}
+
+.section-title {
+  @include font-family("Baloo Tamma 2", Sans-serif);
+  @include font-size(32px);
+  @include font-weight($font-weight-bold);
+  @include text-align(center);
+  @include margin-bottom($spacing-xl);
+  @include text-transform(uppercase);
+  @include color($text-color);
+  @include position(relative);
+
+  &::after {
+    @include content('');
+    @include position(absolute);
+    @include bottom(-10px);
+    @include left(50%);
+    @include transform(translateX(-50%));
+    @include width(50px);
+    @include height(3px);
+    @include background-color($primary-color);
+  }
+}
+
+.loading {
+  @include text-align(center);
+  @include padding($spacing-xl);
+  @include font-size($font-size-lg);
+  @include color($gray);
+}
+
+.banner {
+  @include margin-top(40px);
+  @include width(100%);
+  @include max-width(1600px);
+  @include margin(0, auto);
+
+  &__section {
+    @include position(relative);
+    @include background-image(url("https://demo.assets.templately.com/woo/elementor/33/2024/03/dc32d54a-hero.png"));
+    @include background-position(bottom right);
+    @include background-repeat(no-repeat);
+    @include background-size(65%, auto);
+    @include padding(55px);
+    @include overflow(hidden);
+    @include height(500px);
+    @include background-color(#f8f9fa);
+  }
+
+  &__container {
+    @include margin-top(55px);
+    @include margin-left(40px);
+    @include display(flex);
+    @include justify-content(space-between);
+    @include align-items(center);
+    @include max-width(1350px);
+    @include margin(0, auto);
+    @include position(relative);
+    @include height(70%);
+  }
+
+  &__content {
+    @include padding-top(55px);
+    @include flex(0, 0, 50%);
+    @include max-width(50%);
+    @include padding-right(30px);
+  }
+
+  &__title {
+    @include color(#1D1568);
+    @include font-family("Baloo Tamma 2", Sans-serif);
+    @include font-size(78px);
+    @include font-weight(700);
+    @include line-height(1.3);
+    @include text-transform(uppercase);
+    @include letter-spacing(1px);
+    @include margin(0, 0, 20px);
+  }
+
+  &__description {
+    @include color(#6A7597);
+    @include font-family("Rubik", Sans-serif);
+    @include font-size(26px);
+    @include font-weight(400);
+    @include line-height(1.6);
+    @include margin-bottom(30px);
+  }
+
+  &__button {
+    @include display(inline-flex);
+    @include align-items(center);
+    @include justify-content(center);
+    @include padding(14px, 30px, 14px, 30px);
+    @include color(#ffffff);
+    @include background-color(#cf102d);
+    @include border-radius(100px);
+    @include text-decoration(none);
+    @include font-weight(bold);
+    @include font-size(18px);
+    @include transition(all 0.3s ease);
+    @include box-shadow(0 4px 12px rgba(207, 16, 45, 0.2));
+    @include margin(0 auto);
+    @include width(auto);
+    @include text-align(center);
+
+    &:hover {
+      @include color(#fff);
+      @include transform(translateY(-2px));
+      @include box-shadow(0 6px 15px rgba(207, 16, 45, 0.3));
+    }
+  }
+
+  &__image {
+    @include flex(0, 0, 50%);
+    @include max-width(50%);
+    @include text-align(right);
+
+    img {
+      @include width(550px);
+      @include height(auto);
+      @include object-fit(contain);
+      @include transition(transform 0.3s ease);
+
+      &:hover {
+        @include transform(scale(1.05));
+      }
+    }
+  }
+}
+
+.main-content {
+  @include margin-top(40px);
+  @include display(flex);
+  @include justify-content(center);
+  @include width(100%);
+  @include max-width(1600px);
+  @include margin(0, auto);
+
+  &__menu {
+    @include flex(0, 0, 330px);
+    @include max-width(300px);
+    @include padding-right(15px);
+  }
+
+  &__product {
+    @include padding-left(15px);
+  }
+
+  &__product--title {
+    @include padding(20px);
+    @include width(100%);
+
+      span {
+      @include font-weight(600);
+      @include font-size(40px);
+      @include color(#1D1568);
+      @include font-family("Baloo Tamma 2", Sans-serif);
+      @include text-align(center);
+      @include display(block);
+    }
+  }
+
+  &__product-new,
+  &__product-sale {
+    @include margin-top(70px);
+  }
+}
+
+.product {
+  &__list {
+    @include list-style(none);
+    @include display(flex);
+    @include flex-wrap(wrap);
+    @include margin(0, -7px);
+  }
+
+  &__list-item {
+    @include position(relative);
+    @include padding(15px);
+    @include border-radius(12px);
+    @include background-color(#fff);
+    @include width(23%);
+    @include margin(7px);
+    @include transition(transform 0.3s, box-shadow 0.3s);
+
+    &:hover {
+      @include transform(translateY(-5px));
+      @include box-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+    }
+  }
+
+  &__img-wrap {
+    @include position(relative);
+    @include display(inline-block);
+    @include overflow(hidden);
+    @include line-height(0);
+
+    img {
+      @include width(fit-content);
+      @include max-width(100%);
+      @include height(210px);
+      @include margin(auto);
+      @include backface-visibility(hidden);
+      @include transition(transform 0.3s);
+
+      &:hover {
+        @include transform(scale(1.05));
+      }
+    }
+  }
+
+  &__title-wrap a {
+    @include text-decoration(none);
+  }
+
+  &__title-name {
+    @include color(#423838);
+    @include font-family("Rubik", Sans-serif);
+    @include font-size(20px);
+    @include font-weight(500);
+    @include margin(2px, 0, 12px);
+    @include padding(0);
+    @include text-align(center);
+    @include height(58px);
+    @include display(-webkit-box);
+    @include -webkit-box-orient(vertical);
+    @include -webkit-line-clamp(2);
+    @include overflow(hidden);
+    @include text-overflow(ellipsis);
+    @include line-height(1.5em);
+    @include max-height(3em);
+  }
+
+  &__price-wrap {
+    @include margin-bottom(10px);
+    @include width(100%);
+    @include display(flex);
+    @include align-items(center);
+    @include gap(10px);
+  }
+
+  &__price {
+    &-original {
+      @include text-decoration(line-through);
+      @include color(#888);
+      @include font-size(14px);
+    }
+
+    &-discount {
+      @include color(#cf102d);
+      @include font-size(16px);
+      @include font-weight(bold);
+    }
+
+    &--no-discount {
+      @include font-size(18px);
+      @include color(#cf102d);
+      @include text-align(center);
+      @include width(100%);
+      @include font-weight(bold);
+    }
+  }
+
+  &__button-wrap {
+    @include text-align(center);
+    @include margin-top(10px);
+  }
+
+  &__see-more-wrap {
+    @include text-align(center);
+    @include margin-top(30px);
+  }
+}
+
+.discount-label {
+  @include position(absolute);
+  @include top(12px);
+  @include right(12px);
+  @include background-color(#ff6b00d9);
+  @include color(#fff);
+  @include padding(5px, 12px);
+  @include font-size(14px);
+  @include font-weight(bold);
+  @include border-radius(7px);
+  @include line-height(1);
+  @include display(inline-block);
+  @include transform(translate(10px, -10px));
+  @include box-shadow(0px 4px 6px rgba(0, 0, 0, 0.1));
+  @include text-transform(uppercase);
+  @include z-index(1);
+}
+
+.add-to-cart-btn {
+  @include background-color(#cf102d);
+  @include color(#fff);
+  @include font-size(15px);
+  @include font-weight(600);
+  @include border(none);
+  @include padding(10px, 17px);
+  @include border-radius(12px);
+  @include cursor(pointer);
+  @include transition(background-color 0.3s ease);
+
+  &:hover {
+    @include background-color(#b10e24);
+  }
+}
+
+.out-of-stock-btn {
+  @include background-color(#d6d6d6);
+  @include color(#a0a0a0);
+  @include padding(8px, 33px);
+  @include border(none);
+  @include font-size(16px);
+  @include border-radius(12px);
+  @include cursor(not-allowed);
+  @include transition(background-color 0.3s ease, color 0.3s ease);
+}
+
+.see-more-btn {
+  @include background-color(transparent);
+  @include color(#cf102d);
+  @include font-size(16px);
+  @include font-weight(600);
+  @include border(2px, solid, #cf102d);
+  @include padding(10px, 20px);
+  @include border-radius(50px);
+  @include cursor(pointer);
+  @include transition(all 0.3s ease);
+  @include display(inline-flex);
+  @include align-items(center);
+  @include text-decoration(none);
+
+  span {
+    @include margin-left(8px);
+  }
+
+  &:hover {
+    @include color(#b10e24);
+    @include border-color(#b10e24);
+    @include box-shadow(0 0 10px rgba(207, 16, 45, 0.6), 0 0 3px rgba(207, 16, 45, 0.4));
+  }
+}
+
+.icon-caret {
+  @include margin-left(8px);
+  @include transform(rotate(-90deg));
+}
+
+@include respond-to(xl) {
+  .product__list-item {
+    @include width(31%);
+  }
+}
+
+@include respond-to(lg) {
+  .product__list-item {
+    @include width(47%);
+  }
+
+  .banner {
+    &__title {
+      @include font-size($font-size-3xl);
+    }
+
+    &__description {
+      @include font-size($font-size-lg);
+    }
+
+    &__image img {
+      @include width(400px);
+    }
+  }
+}
+
+@include respond-to(md) {
+  .home {
+    &__sidebar,
+    &__content {
+      @include flex(0, 0, 100%);
+      @include max-width(100%);
+    }
+
+    &__row {
+      @include flex-direction(column);
+    }
+  }
+
+  .product__list-item {
+    @include width(100%);
+  }
+
+  .banner {
+    &__section {
+      @include height(auto);
+      @include padding(30px);
+      @include background-size(cover);
+    }
+
+    &__container {
+      @include flex-direction(column);
+    }
+
+    &__content {
+      @include flex(0, 0, 100%);
+      @include max-width(100%);
+      @include text-align(center);
+      @include margin-bottom(30px);
+      @include padding-right(0);
+    }
+
+    &__image {
+      @include flex(0, 0, 100%);
+      @include max-width(100%);
+      @include text-align(center);
+
+      img {
+        @include width(100%);
+        @include max-width(400px);
+      }
+    }
+
+    &__title {
+      @include font-size(48px);
+    }
+
+    &__description {
+      @include font-size(20px);
+    }
+  }
+
+  .main-content {
+    @include flex-direction(column);
+
+    &__menu {
+      @include flex(0, 0, 100%);
+      @include max-width(100%);
+      @include padding-right(0);
+      @include margin-bottom(30px);
+    }
+
+    &__product {
+      @include padding-left(0);
+    }
+  }
+
+  .row {
+    @include flex-direction(column);
+  }
+
+  .banner {
+    &__button {
+      @include padding(12px, 25px);
+      @include font-size(16px);
+    }
+  }
+}
+
+@include respond-to(sm) {
+  .banner {
+    &__title {
+      @include font-size(36px);
+    }
+
+    &__description {
+      @include font-size(18px);
+    }
+
+    &__button {
+      @include padding(10px, 20px);
+      @include font-size(14px);
+    }
+  }
+
+  .main-content {
+    &__product--title span {
+      @include font-size(32px);
+    }
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  position: relative;
+
+  .section-title {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .view-all-link {
+    color: #cf102d;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    transition: color 0.3s ease;
+    margin-left: auto;
+
+    &:hover {
+      color: #b80021;
+      text-decoration: underline;
+    }
+
+    i {
+      font-size: 12px;
+    }
+  }
+}
+
+.home__products {
+  margin-bottom: 40px;
+
+  .home__products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .home__products .home__products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .home__products .home__products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .home__products .home__products-grid {
+    grid-template-columns: 1fr;
+  }
+} 

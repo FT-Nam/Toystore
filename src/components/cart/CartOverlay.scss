@@ -1,0 +1,460 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.cart-overlay {
+  @include display(none);
+  @include position(absolute);
+  @include right(0);
+  @include top(100%);
+  @include width(450px);
+  @include background-color($white);
+  @include border-radius($border-radius-lg);
+  @include box-shadow($shadow-lg);
+  @include z-index($z-index-dropdown);
+  @include opacity(0);
+  @include transform(translate(224px, 0));
+  @include transition(opacity 0.5s ease, transform 0.3s ease);
+
+  &:hover {
+    @include display(block);
+    @include opacity(1);
+  }
+
+  &__content {
+    @include padding(0, $spacing-xl);
+    @include font-family($font-family-base);
+    @include color($text-color);
+  }
+
+  &__items {
+    @include display(block);
+    @include width(100%);
+    @include margin-top($spacing-xl);
+    @include max-height(300px);
+    @include overflow-y(auto);
+    @include padding-right($spacing-sm);
+  }
+
+  &::-webkit-scrollbar {
+    @include width(8px);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @include background-color($primary-color);
+    @include border-radius($border-radius-sm);
+  }
+
+  &::-webkit-scrollbar-track {
+    @include background-color(#f7f7f7);
+  }
+
+  &__item {
+    @include display(grid);
+    @include grid-template-columns(auto 1fr);
+    @include grid-template-rows(auto auto);
+    @include column-gap(1.6rem);
+    @include row-gap(1.4rem);
+    @include align-items(center);
+    @include justify-content(space-between);
+    @include padding(2px, 0, $spacing-md);
+    @include border-bottom(1px, solid, #eaeaea);
+  }
+
+  &__media {
+    @include grid-row(1 / span 2);
+    @include grid-column(1);
+
+    img {
+      @include grid-column(1 / 2);
+      @include width(70px);
+      @include height(auto);
+      @include border-radius($border-radius-md);
+      @include margin-right($spacing-md);
+      @include box-shadow($shadow-sm);
+      @include grid-row(1 / 3);
+    }
+  }
+
+  &__details {
+    @include grid-row(1);
+    @include grid-column(2);
+    @include flex(1);
+    @include display(flex);
+    @include flex-direction(column);
+  }
+
+  &__name-container {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-sm);
+    @include position(relative);
+    @include justify-content(space-between);
+  }
+
+  &__name {
+    @include font-size(15px);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+    @include text-decoration(none);
+  }
+
+  &__delete {
+    @include font-size(18px);
+    @include color($primary-color);
+    @include cursor(pointer);
+    @include opacity(0);
+    @include transition(opacity);
+
+              &:hover {
+      @include opacity(1);
+    }
+  }
+
+  &__quantity-price {
+    @include align-items(center);
+    @include justify-content(space-between);
+    @include display(flex);
+    @include grid-row(2);
+    @include grid-column(2);
+  }
+
+  &__price {
+    @include font-size(14px);
+    @include font-weight($font-weight-bold);
+    @include color($primary-color);
+    @include margin(0, $spacing-md);
+  }
+
+  &__quantity {
+    @include display(flex);
+    @include align-items(center);
+    @include justify-content(center);
+    @include gap($spacing-sm);
+  }
+
+  &__footer {
+    @include padding-top(2px);
+    @include transform(translateY(-25px));
+  }
+
+  .check-box {
+    @include margin-top($spacing-md);
+    @include font-size(13px);
+    @include display(flex);
+    @include align-items(center);
+    @include color($gray);
+
+    input {
+      @include margin-right($spacing-xs);
+    }
+
+    label a {
+      @include color($primary-color);
+      @include text-decoration(none);
+
+              &:hover {
+        @include text-decoration(underline);
+      }
+    }
+  }
+
+  .totals {
+    @include display(flex);
+    @include justify-content(space-between);
+    @include align-items(center);
+    @include background-color(#f7f7f7);
+    @include padding($spacing-md);
+    @include border-radius($border-radius-md);
+    @include margin-top($spacing-lg);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+    @include box-shadow($shadow-sm);
+
+    p {
+      @include margin(6px, 0, 0, 0);
+    }
+
+    &__subtotal-value {
+      @include font-size($font-size-lg);
+      @include font-weight($font-weight-bold);
+      @include color($primary-color);
+    }
+  }
+
+  &__ctas {
+    @include display(flex);
+    @include justify-content(space-between);
+    @include margin-top($spacing-lg);
+    @include gap($spacing-sm);
+  }
+
+  &__go-cart,
+  &__checkout {
+    @include display(inline-block);
+    @include padding($spacing-sm, $spacing-xl);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-bold);
+    @include text-align(center);
+    @include border-radius($border-radius-md);
+    @include cursor(pointer);
+    @include transition(background-color, color, box-shadow);
+    @include box-shadow($shadow-sm);
+  }
+
+  &__go-cart {
+    @include background-color($white);
+    @include color($primary-color);
+    @include border(2px, solid, $primary-color);
+    @include text-decoration(none);
+
+    &:hover {
+      @include background-color($primary-color);
+      @include color($white);
+      @include box-shadow($shadow-md);
+    }
+  }
+
+  &__checkout {
+    @include background-color($primary-color);
+    @include color($white);
+    @include border(none);
+    @include text-decoration(none);
+
+    &:hover {
+      @include background-color($hover-color);
+      @include box-shadow($shadow-md);
+    }
+  }
+
+  .quantity-btn {
+    @include background-color(transparent);
+    @include border(2px, solid, $primary-color);
+    @include color($primary-color);
+    @include font-size($font-size-lg);
+    @include width(32px);
+    @include height(32px);
+    @include border-radius(50%);
+    @include display(flex);
+    @include align-items(center);
+    @include justify-content(center);
+    @include cursor(pointer);
+    @include transition(background-color, color);
+
+    &:hover {
+      @include background-color($primary-color);
+      @include color($white);
+    }
+
+    svg {
+      @include width(12px);
+      @include height(12px);
+    }
+  }
+
+  &__quantity-input {
+    @include width(64px);
+    @include font-size(14px);
+    @include line-height(20px);
+    @include border(2px, solid, #8F8F8F);
+    @include border-radius(16px);
+    @include color($primary-color);
+    @include font-weight($font-weight-medium);
+    @include opacity(0.85);
+    @include text-align(center);
+    @include background-color(transparent);
+    @include padding(0.5rem);
+    @include flex-grow(1);
+    @include appearance(none);
+
+                &::-webkit-outer-spin-button,
+                &::-webkit-inner-spin-button {
+      @include appearance(none);
+      @include margin(0);
+    }
+  }
+}
+
+.cart-overlay__header {
+  @include display(flex);
+  @include justify-content(space-between);
+  @include align-items(center);
+  @include margin-bottom($spacing-lg);
+  @include padding-bottom($spacing-md);
+  @include border-bottom(1px, solid, $border-color);
+
+  h3 {
+    @include margin(0);
+    @include font-size($font-size-xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+
+  .close-btn {
+    @include background(none);
+    @include border(none);
+    @include font-size($font-size-lg);
+    @include color($text-muted);
+    @include cursor(pointer);
+    @include padding(0);
+    @include transition(color);
+
+    &:hover {
+      @include color($text-color);
+    }
+  }
+}
+
+.cart-overlay__items {
+  @include margin-bottom($spacing-lg);
+}
+
+.cart-overlay__item {
+  @include display(flex);
+  @include align-items(center);
+  @include margin-bottom($spacing-md);
+  @include padding-bottom($spacing-md);
+  @include border-bottom(1px, solid, $border-color);
+
+  &:last-child {
+    @include margin-bottom(0);
+    @include padding-bottom(0);
+    @include border-bottom(none);
+  }
+}
+
+.cart-overlay__item-image {
+  @include width(80px);
+  @include height(80px);
+  @include margin-right($spacing-md);
+  @include border-radius($border-radius-sm);
+  @include overflow(hidden);
+
+  img {
+    @include width(100%);
+    @include height(100%);
+    @include object-fit(cover);
+  }
+}
+
+.cart-overlay__item-details {
+  @include flex(1);
+
+  h4 {
+    @include margin(0);
+    @include margin-bottom($spacing-xs);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-medium);
+    @include color($text-color);
+  }
+
+  p {
+    @include margin(0);
+    @include font-size($font-size-sm);
+    @include color($text-muted);
+  }
+}
+
+.cart-overlay__item-price {
+  @include margin-left($spacing-md);
+  @include font-weight($font-weight-semibold);
+  @include color($text-color);
+}
+
+.cart-overlay__summary {
+  @include margin-top($spacing-lg);
+  @include padding-top($spacing-lg);
+  @include border-top(1px, solid, $border-color);
+
+  .summary-row {
+    @include display(flex);
+    @include justify-content(space-between);
+    @include margin-bottom($spacing-sm);
+
+    &:last-child {
+      @include margin-bottom(0);
+      @include margin-top($spacing-md);
+      @include padding-top($spacing-md);
+      @include border-top(1px, solid, $border-color);
+      @include font-weight($font-weight-semibold);
+    }
+  }
+}
+
+.cart-overlay__actions {
+  @include margin-top($spacing-lg);
+  @include display(flex);
+  @include flex-direction(column);
+  @include gap($spacing-md);
+
+  button {
+    @include width(100%);
+    @include padding($spacing-md);
+    @include border-radius($border-radius-sm);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-medium);
+    @include cursor(pointer);
+    @include transition(background-color);
+
+    &.btn-primary {
+      @include background-color($primary-color);
+      @include color($white);
+
+          &:hover {
+        @include background-color($primary-hover);
+      }
+    }
+
+    &.btn-outline {
+      @include background-color($white);
+      @include color($primary-color);
+      @include border(1px, solid, $primary-color);
+
+      &:hover {
+        @include background-color($primary-color);
+        @include color($white);
+      }
+    }
+  }
+}
+
+@include respond-to(sm) {
+  .cart-overlay__content {
+    @include max-width(100%);
+  }
+}
+
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+
+  i {
+    font-size: 3rem;
+    color: #ddd;
+    margin-bottom: 15px;
+  }
+
+  p {
+    margin: 0 0 20px;
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  button {
+    padding: 12px 30px;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+} 

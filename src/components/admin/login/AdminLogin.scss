@@ -1,0 +1,125 @@
+/* Admin Login Styles with unique class names */
+
+.admin-login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  background-image: linear-gradient(120deg, #e0f7fa 0%, #bbdefb 100%);
+}
+
+.admin-login-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.admin-login-header {
+  text-align: center;
+  margin-bottom: 30px;
+
+  h2 {
+    color: #424F63;
+    margin: 0 0 10px;
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  p {
+    color: #6c757d;
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+.admin-login-form {
+  .admin-form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #495057;
+    font-weight: 500;
+  }
+
+  .admin-form-control {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:focus {
+      border-color: #80bdff;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  }
+
+  .admin-btn {
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 12px 15px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, 
+                border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    
+    &:focus {
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+    &:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+  }
+
+  .admin-btn-primary {
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+    
+    &:hover:not(:disabled) {
+      color: #fff;
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+  }
+
+  .admin-btn-block {
+    display: block;
+    width: 100%;
+  }
+}
+
+.admin-alert {
+  position: relative;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.admin-alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+} 

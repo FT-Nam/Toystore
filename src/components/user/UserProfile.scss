@@ -1,0 +1,68 @@
+.form-account {
+  background-color: white;
+  width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+
+  h2 {
+    font-size: 30px;
+    margin-bottom: 25px;
+    color: #333333;
+    text-align: center;
+  }
+
+  p {
+    font-size: 16px;
+    margin-bottom: 25px;
+    color: #333333;
+  }
+}
+
+.label-form {
+  font-size: 15px;
+  color: #333333;
+}
+
+.input-form {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 18px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 16px;
+
+  &[disabled] {
+    background-color: #e9ecef;
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.btn-account {
+  width: 120px;
+  margin-right: 10px;
+}
+
+.btn-danger {
+  background-color: #cf102d;
+  border-color: #cf102d;
+
+  &:hover {
+    background-color: #a80e24;
+    border-color: #a80e24;
+  }
+}
+
+.btn-outline-danger {
+  color: #cf102d;
+  border-color: #cf102d;
+
+  &:hover {
+    background-color: #cf102d;
+    color: white;
+  }
+} 

@@ -1,0 +1,709 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.checkout {
+  @include container;
+  @include padding($spacing-xl, 0);
+  width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+
+  &__content {
+    @include display(flex);
+    @include gap($spacing-xl);
+
+    @include respond-to(md) {
+      @include flex-direction(column);
+    }
+  }
+
+  &__main {
+    @include flex(1);
+  }
+
+  &__summary {
+    @include width(350px);
+    @include flex-shrink(0);
+    @include padding($spacing-lg);
+    @include background-color($white);
+    @include border-radius($border-radius-md);
+    @include box-shadow($shadow-sm);
+    @include position(sticky);
+    @include top($spacing-xl);
+
+    @include respond-to(md) {
+      @include width(100%);
+      @include position(static);
+    }
+  }
+
+  &__section {
+    @include margin-bottom($spacing-xl);
+    @include padding($spacing-lg);
+    @include background-color($white);
+    @include border-radius($border-radius-md);
+    @include box-shadow($shadow-sm);
+
+    &-title {
+      @include margin(0);
+      @include margin-bottom($spacing-lg);
+      @include font-size($font-size-xl);
+      @include font-weight($font-weight-semibold);
+      @include color($text-color);
+    }
+  }
+
+  &__address-header,
+  &__address-text {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-sm);
+    @include margin-bottom($spacing-md);
+  }
+
+  &__icon {
+    @include font-size($font-size-lg);
+    @include color($primary-color);
+  }
+
+  &__recipient {
+    @include font-weight($font-weight-semibold);
+    @include margin-bottom($spacing-xs);
+  }
+
+  &__address-detail {
+    @include color($text-muted);
+  }
+
+  &__btn {
+    @include display(inline-flex);
+    @include align-items(center);
+    @include gap($spacing-sm);
+    @include padding($spacing-sm, $spacing-md);
+    @include background-color($white);
+    @include border(1px, solid, $primary-color);
+    @include border-radius($border-radius-sm);
+    @include color($primary-color);
+    @include font-weight($font-weight-medium);
+    @include cursor(pointer);
+    @include transition(background-color, color);
+
+    &:hover {
+      @include background-color($primary-color);
+      @include color($white);
+    }
+
+    &--change {
+      @include margin-right($spacing-md);
+    }
+
+    &--voucher {
+      @include background-color($primary-color);
+      @include color($white);
+    }
+  }
+
+  &__product-item {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-md);
+    @include margin-bottom($spacing-md);
+    @include padding-bottom($spacing-md);
+    @include border-bottom(1px, solid, $border-color);
+
+    &:last-child {
+      @include margin-bottom(0);
+      @include padding-bottom(0);
+      @include border-bottom(none);
+    }
+  }
+
+  &__product-label {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-sm);
+    @include padding($spacing-xs, $spacing-sm);
+    @include background-color($light-gray);
+    @include border-radius($border-radius-sm);
+    @include font-size($font-size-sm);
+    @include color($text-muted);
+  }
+
+  &__product-name {
+    @include font-weight($font-weight-medium);
+    @include margin-bottom($spacing-xs);
+  }
+
+  &__chat {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-sm);
+    @include color($text-muted);
+    @include font-size($font-size-sm);
+  }
+
+  &__product-desc {
+    @include color($text-muted);
+    @include font-size($font-size-sm);
+  }
+
+  &__price-info {
+    @include display(flex);
+    @include justify-content(space-between);
+    @include align-items(center);
+    @include margin-top($spacing-md);
+  }
+
+  &__price,
+  &__quantity {
+    @include font-weight($font-weight-semibold);
+  }
+
+  &__shipping-method {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-md);
+    @include padding($spacing-md);
+    @include background-color($white);
+    @include border(1px, solid, $border-color);
+    @include border-radius($border-radius-sm);
+    @include cursor(pointer);
+    @include transition(border-color);
+
+    &:hover {
+      @include border-color($primary-color);
+    }
+  }
+
+  &__shipping-label {
+    @include font-weight($font-weight-medium);
+  }
+
+  &__total {
+    @include margin-top($spacing-lg);
+  }
+
+  &__amount {
+    @include font-weight($font-weight-semibold);
+  }
+
+  &__total-amount {
+    @include font-size($font-size-xl);
+    @include color($primary-color);
+  }
+
+  &__voucher {
+    @include margin-top($spacing-lg);
+    @include padding($spacing-md);
+    @include background-color($light-gray);
+    @include border-radius($border-radius-sm);
+  }
+
+  &__btn--order {
+    @include display(block);
+    @include width(100%);
+    @include padding($spacing-md);
+    @include background-color($primary-color);
+    @include color($white);
+    @include border(none);
+    @include border-radius($border-radius-sm);
+    @include font-weight($font-weight-semibold);
+    @include cursor(pointer);
+    @include transition(background-color);
+    @include margin-top($spacing-lg);
+
+    &:hover {
+      @include background-color($hover-color);
+    }
+
+    &:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+  }
+
+  &__product-image {
+    @include width(80px);
+    @include height(80px);
+    @include border-radius($border-radius-sm);
+    @include overflow(hidden);
+
+    img {
+      @include width(100%);
+      @include height(100%);
+      @include object-fit(cover);
+    }
+  }
+
+  &__product-info {
+    @include flex(1);
+  }
+
+  &__voucher-card {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-md);
+    @include padding($spacing-md);
+    @include background-color($white);
+    @include border-radius($border-radius-sm);
+    @include box-shadow($shadow-sm);
+    @include cursor(pointer);
+    @include transition(transform, box-shadow);
+    @include position(relative);
+    @include overflow(hidden);
+
+    &:hover {
+      @include transform(translateY(-2px));
+      @include box-shadow($shadow-md);
+    }
+
+    &::before {
+      @include content('');
+      @include position(absolute);
+      @include top(0);
+      @include left(0);
+      @include width(4px);
+      @include height(100%);
+      @include background-color($primary-color);
+    }
+  }
+
+  &__voucher-icon {
+    @include font-size($font-size-2xl);
+    @include color($primary-color);
+  }
+
+  &__voucher-details {
+    @include flex(1);
+  }
+
+  &__voucher-title {
+    @include font-weight($font-weight-semibold);
+    @include margin-bottom($spacing-xs);
+  }
+
+  &__voucher-condition {
+    @include color($text-muted);
+    @include font-size($font-size-sm);
+  }
+
+  &__voucher-checkbox {
+    @include width(20px);
+    @include height(20px);
+  }
+
+  &__section--payment {
+    @include background-color($light-gray);
+
+    .checkout__section-title {
+      @include color($primary-color);
+      @include font-weight($font-weight-bold);
+    }
+  }
+
+  &__payment-method {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-md);
+    @include padding($spacing-md);
+    @include background-color($white);
+    @include border-radius($border-radius-sm);
+    @include margin-bottom($spacing-md);
+    @include cursor(pointer);
+    @include transition(background-color);
+
+    &:last-child {
+      @include margin-bottom(0);
+    }
+
+    &:hover {
+      @include background-color($light-gray);
+    }
+  }
+
+  &__payment-method-content {
+    @include display(flex);
+    @include flex-direction(column);
+    @include gap($spacing-xs);
+  }
+
+  &__payment-method-header {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-sm);
+  }
+
+  &__payment-method-logo {
+    @include width(24px);
+    @include height(24px);
+    @include object-fit(contain);
+  }
+
+  &__payment-method-name {
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+
+  &__payment-method-desc {
+    @include font-size($font-size-sm);
+    @include color($text-muted);
+  }
+
+  &__payment-option {
+    @include appearance(none);
+    @include width(20px);
+    @include height(20px);
+    @include border(2px, solid, $primary-color);
+    @include border-radius(50%);
+    @include cursor(pointer);
+    @include position(relative);
+
+    &:checked {
+      @include background-color($primary-color);
+    }
+  }
+
+  &__payment-label {
+    @include flex(1);
+    @include cursor(pointer);
+  }
+}
+
+@include respond-to(sm) {
+  .checkout {
+    &__section {
+      @include padding($spacing-md);
+    }
+
+    &__product-item {
+      @include flex-direction(column);
+      @include align-items(flex-start);
+    }
+
+    &__product-image {
+      @include width(100%);
+      @include height(200px);
+    }
+
+    &__price-info {
+      @include flex-direction(column);
+      @include align-items(flex-start);
+      @include gap($spacing-sm);
+    }
+  }
+}
+
+.checkout__section {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.checkout__section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Address Section */
+.checkout__address-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.checkout__icon {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.checkout__address-text {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.checkout__address-content {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.checkout__recipient {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.checkout__address-detail {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.checkout__btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.checkout__btn--change {
+  color: #cf102d;
+  border: 1px solid #cf102d;
+  background: white;
+
+  &:hover {
+    background: #fff5f5;
+  }
+}
+
+/* Shipping Section */
+.checkout__shipping-method {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.checkout__shipping-option {
+  margin-right: 10px;
+}
+
+.checkout__shipping-label {
+  font-size: 14px;
+}
+
+/* Product Section */
+.checkout__product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.checkout__product-item {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.checkout__product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.checkout__product-info {
+  flex: 1;
+}
+
+.checkout__product-desc {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.checkout__price-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.checkout__price {
+  color: #cf102d;
+  font-weight: 500;
+}
+
+.checkout__quantity {
+  color: #666;
+}
+
+.checkout__total-price {
+  font-weight: 500;
+}
+
+/* Voucher Section */
+.checkout__voucher {
+  margin-bottom: 20px;
+}
+
+.checkout__voucher-label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.checkout__voucher-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background: #f8f9fa;
+}
+
+.checkout__voucher-icon {
+  font-size: 24px;
+  margin-right: 15px;
+}
+
+.checkout__voucher-details {
+  flex: 1;
+}
+
+.checkout__voucher-title {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.checkout__voucher-condition {
+  font-size: 12px;
+  color: #666;
+}
+
+.checkout__voucher-checkbox {
+  margin-left: 15px;
+}
+
+/* Payment Section */
+.checkout__payment-method {
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.checkout__payment-option {
+  margin-right: 10px;
+}
+
+.checkout__payment-label {
+  font-size: 14px;
+}
+
+/* Total Section */
+.checkout__total {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.checkout__total p {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.checkout__amount {
+  font-weight: 500;
+}
+
+.checkout__total-amount {
+  font-size: 18px;
+  font-weight: 600;
+  color: #cf102d;
+}
+
+.checkout__btn--order {
+  width: 100%;
+  padding: 12px;
+  background: #cf102d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background: #a80c21;
+  }
+  
+  &:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+/* Modal Styles */
+.modal-checkout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-checkout h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #cf102d;
+}
+
+.modal-checkout p {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.modal-checkout .btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #cf102d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+
+  &:hover {
+    background: #a80c21;
+  }
+} 

@@ -1,0 +1,537 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.login {
+  @include display(flex);
+  @include justify-content(center);
+  @include align-items(center);
+  @include min-height(calc(100vh - 80px));
+  @include background-color($background-light);
+  @include padding($spacing-lg);
+}
+
+.login__container {
+  @include width(100%);
+  @include max-width(500px);
+  @include padding($spacing-xl);
+  @include background-color($white);
+  @include border-radius($border-radius-md);
+  @include box-shadow($shadow-md);
+
+  @include respond-to(sm) {
+    @include padding($spacing-lg);
+  }
+}
+
+.login__header {
+  @include text-align(center);
+  @include margin-bottom($spacing-xl);
+
+  h1 {
+    @include margin(0);
+    @include margin-bottom($spacing-md);
+    @include font-size($font-size-2xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+
+  p {
+    @include margin(0);
+    @include font-size($font-size-base);
+    @include color($text-muted);
+  }
+}
+
+.login__form {
+  .form-group {
+    @include margin-bottom($spacing-lg);
+
+    label {
+      @include display(block);
+      @include margin-bottom($spacing-sm);
+      @include font-size($font-size-base);
+      @include font-weight($font-weight-medium);
+      @include color($text-color);
+    }
+
+    input {
+      @include width(100%);
+      @include padding($spacing-sm);
+      @include border(1px, solid, $border-color);
+      @include border-radius($border-radius-sm);
+      @include font-size($font-size-base);
+      @include transition(border-color);
+
+      &:focus {
+        @include outline(none);
+        @include border-color($primary-color);
+      }
+    }
+
+    &.error {
+      input {
+        @include border-color($danger-color);
+      }
+
+      .error-message {
+        @include margin-top($spacing-xs);
+        @include font-size($font-size-sm);
+        @include color($danger-color);
+      }
+    }
+  }
+
+  .form__checkbox {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-sm);
+    @include margin-bottom($spacing-lg);
+
+    input[type="checkbox"] {
+      @include width(16px);
+      @include height(16px);
+      @include margin(0);
+    }
+
+    label {
+      @include margin(0);
+      @include font-size($font-size-base);
+      @include color($text-muted);
+      @include cursor(pointer);
+    }
+  }
+
+  .btn-submit {
+    @include width(100%);
+    @include padding($spacing-md);
+    @include background-color($primary-color);
+    @include color($white);
+    @include border(none);
+    @include border-radius($border-radius-sm);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-medium);
+    @include cursor(pointer);
+    @include transition(background-color);
+
+    &:hover {
+      @include background-color($primary-hover);
+    }
+
+    &:disabled {
+      @include opacity(0.7);
+      @include cursor(not-allowed);
+    }
+  }
+}
+
+.login__options {
+  @include text-align(center);
+  @include margin-top($spacing-lg);
+  @include color($text-muted);
+
+  a {
+    @include color($primary-color);
+    @include text-decoration(none);
+    @include font-weight($font-weight-medium);
+
+    &:hover {
+      @include text-decoration(underline);
+    }
+  }
+}
+
+.login__social {
+  @include margin-top($spacing-xl);
+  @include padding-top($spacing-xl);
+  @include border-top(1px, solid, $border-color);
+
+  h3 {
+    @include margin(0);
+    @include margin-bottom($spacing-lg);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-medium);
+    @include color($text-muted);
+    @include text-align(center);
+  }
+
+  .social__buttons {
+    @include display(flex);
+    @include justify-content(center);
+    @include gap($spacing-md);
+
+    button {
+      @include display(flex);
+      @include align-items(center);
+      @include justify-content(center);
+      @include gap($spacing-sm);
+      @include padding($spacing-sm, $spacing-lg);
+      @include background-color($white);
+      @include color($text-color);
+      @include border(1px, solid, $border-color);
+      @include border-radius($border-radius-sm);
+      @include font-size($font-size-base);
+      @include font-weight($font-weight-medium);
+      @include cursor(pointer);
+      @include transition(all);
+
+      &:hover {
+        @include background-color($background-light);
+      }
+
+      .icon {
+        @include font-size($font-size-lg);
+      }
+    }
+  }
+}
+
+.form-container {
+  @include width(800px);
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(center);
+  @include min-height(100vh);
+}
+
+.account-container {
+  @include background-color($white);
+  @include padding($spacing-4xl);
+  @include border-radius($border-radius-lg);
+  @include box-shadow($shadow-md);
+  @include max-width(500px);
+  @include width(100%);
+
+  h2 {
+    @include font-size($font-size-2xl);
+    @include margin-bottom($spacing-xl);
+    @include color($text-color);
+    @include text-align(center);
+  }
+}
+
+#loginForm {
+  @include padding(50px,50px,50px,50px);
+  @include max-width(800px);
+}
+
+#forgotPasswordForm {
+  @include padding(50px,50px,50px,50px);
+  @include width(600px);
+}
+
+#contactForm {
+  @include padding(50px,50px,50px,50px);
+  @include max-width(900px);
+}
+
+.contact-container {
+  @include background-color($white);
+  @include padding($spacing-4xl);
+  @include border-radius($border-radius-lg);
+  @include box-shadow($shadow-md);
+  @include max-width(500px);
+  @include width(100%);
+
+  h2 {
+    @include margin-bottom($spacing-sm);
+  }
+
+  p {
+    @include font-size($font-size-base);
+    @include margin-bottom($spacing-xl);
+    @include color($text-color);
+    @include text-align(center);
+  }
+}
+
+.label-form {
+  @include font-size($font-size-base);
+  @include color($text-color);
+}
+
+.input-form {
+  @include width(100%);
+  @include padding($spacing-md);
+  @include margin-top($spacing-sm);
+  @include margin-bottom($spacing-lg);
+  @include border(1px, solid, #cccccc);
+  @include border-radius($border-radius-sm);
+  @include font-size($font-size-base);
+
+  &[disabled] {
+    @include background-color(#e9ecef);
+    @include opacity(0.7);
+    @include cursor(not-allowed);
+  }
+}
+
+.btnForm {
+  @include background-color($primary-color);
+  @include border(none);
+  @include color($white);
+  @include font-size($font-size-lg);
+  @include padding($spacing-md);
+  @include width(100%);
+  @include border-radius($border-radius-sm);
+  @include cursor(pointer);
+  @include transition(background-color);
+
+  &:hover {
+    @include background-color($hover-color);
+  }
+}
+
+.btn-account {
+  @include width(120px);
+}
+
+.options {
+  @include font-size($font-size-base);
+  @include text-align(center);
+  @include margin-top($spacing-lg);
+
+  a {
+    @include color($primary-color);
+    @include text-decoration(none);
+
+    &:hover {
+      @include text-decoration(underline);
+    }
+  }
+}
+
+.alert {
+  @include padding($spacing-md);
+  @include margin-bottom($spacing-lg);
+  @include border-radius($border-radius-sm);
+  @include font-size($font-size-base);
+
+  &-danger {
+    @include background-color(#f8d7da);
+    @include border(1px, solid, #f5c6cb);
+    @include color(#721c24);
+  }
+}
+
+.login-form {
+  @include display(flex);
+  @include flex-direction(column);
+  @include gap($spacing-md);
+}
+
+.form-group {
+  @include display(flex);
+  @include flex-direction(column);
+  @include gap($spacing-xs);
+}
+
+@include respond-to(sm) {
+  .account-container {
+    padding: $spacing-lg;
+    margin: $spacing-md;
+  }
+}
+
+.social-login {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+
+  .btn-google, .btn-facebook {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    color: white;
+    border: none;
+  }
+
+  .btn-google {
+    background-color: #DB4437;
+    
+    &:hover {
+      background-color: darken(#DB4437, 10%);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(219, 68, 55, 0.3);
+    }
+  }
+
+  .btn-facebook {
+    background-color: #3b5998;
+    
+    &:hover {
+      background-color: darken(#3b5998, 10%);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(59, 89, 152, 0.3);
+    }
+  }
+}
+
+.login-container {
+  @include width(100%);
+  @include max-width(600px);
+  @include margin(0 auto);
+  @include padding($spacing-xl,$spacing-xl,$spacing-xl,$spacing-xl);
+  @include background-color($white);
+  @include border-radius($border-radius-md);
+  @include box-shadow($shadow-md);
+
+  h2 {
+    @include text-align(center);
+    @include margin-bottom($spacing-xl);
+    @include font-size($font-size-2xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+
+  .error-message {
+    @include padding($spacing-sm);
+    @include margin-bottom($spacing-md);
+    @include background-color(lighten($danger-color, 35%));
+    @include border-radius($border-radius-sm);
+    @include color($danger-color);
+    @include font-size($font-size-sm);
+    @include text-align(center);
+  }
+
+  .form-group {
+    @include margin-bottom($spacing-md);
+
+    label {
+      @include display(block);
+      @include margin-bottom($spacing-xs);
+      @include font-size($font-size-base);
+      @include color($text-color);
+    }
+
+    input {
+      @include width(100%);
+      @include padding($spacing-sm);
+      @include border(1px, solid, $border-color);
+      @include border-radius($border-radius-sm);
+      @include font-size($font-size-base);
+
+      &:focus {
+        @include outline(none);
+        @include border-color($primary-color);
+      }
+    }
+  }
+
+  .btn-login {
+    @include width(100%);
+    @include padding($spacing-sm);
+    @include margin-top($spacing-sm);
+    @include background-color($primary-color);
+    @include color($white);
+    @include border(none);
+    @include border-radius($border-radius-sm);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-medium);
+    @include cursor(pointer);
+    @include transition(background-color 0.3s);
+
+    &:hover {
+      @include background-color($primary-hover);
+    }
+  }
+
+  .login-divider {
+    @include display(flex);
+    @include align-items(center);
+    @include margin($spacing-md 0);
+
+    .line {
+      @include flex(1);
+      @include height(1px);
+      @include background-color($border-color);
+    }
+
+    .text {
+      @include padding(0 $spacing-sm);
+      @include color($text-muted);
+      @include font-size($font-size-sm);
+    }
+  }
+
+  .social-login {
+    @include display(flex);
+    @include justify-content(center);
+    @include gap($spacing-md);
+    @include margin-bottom($spacing-lg);
+
+    .btn-social {
+      @include width(48px);
+      @include height(48px);
+      @include display(flex);
+      @include align-items(center);
+      @include justify-content(center);
+      @include border-radius(50%);
+      @include border(1px, solid, $border-color);
+      @include background-color($white);
+      @include cursor(pointer);
+      @include transition(transform 0.2s, box-shadow 0.2s);
+
+      img {
+        @include width(24px);
+        @include height(24px);
+      }
+
+      &:hover {
+        @include transform(translateY(-2px));
+        @include box-shadow($shadow-sm);
+      }
+    }
+
+    .btn-google {
+      &:hover {
+        @include border-color(#DB4437);
+      }
+    }
+
+    .btn-facebook {
+      &:hover {
+        @include border-color(#4267B2);
+      }
+    }
+  }
+
+  .register-link {
+    @include text-align(center);
+    @include margin-top($spacing-md);
+    @include font-size($font-size-sm);
+    @include color($text-muted);
+
+    a {
+      @include color($primary-color);
+      @include text-decoration(none);
+      @include font-weight($font-weight-medium);
+
+      &:hover {
+        @include text-decoration(underline);
+      }
+    }
+  }
+
+  @include respond-to(sm) {
+    @include padding($spacing-md);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .login-container {
+    margin: 20px auto;
+    padding: 20px;
+    
+    h2 {
+      font-size: 20px;
+    }
+  }
+} 

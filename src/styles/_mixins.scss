@@ -1,0 +1,703 @@
+// Animation mixins
+@mixin animation($value) {
+  animation: $value;
+}
+
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// Grid mixins
+@mixin grid-template-columns($value) {
+  grid-template-columns: $value;
+}
+
+@mixin grid-template-rows($value) {
+  grid-template-rows: $value;
+}
+
+@mixin grid-column($value) {
+  grid-column: $value;
+}
+
+@mixin grid-row($value) {
+  grid-row: $value;
+}
+
+// Overflow mixins
+@mixin overflow-x($value) {
+  overflow-x: $value;
+}
+
+@mixin overflow-y($value) {
+  overflow-y: $value;
+}
+
+// Flexbox mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@mixin flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-shrink($value) {
+  flex-shrink: $value;
+}
+
+@mixin flex-basis($value) {
+  flex-basis: $value;
+}
+
+@mixin align-self($value) {
+  align-self: $value;
+}
+
+// Grid mixins
+@mixin grid($columns: 1, $gap: $spacing-md) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+// Media queries
+@mixin mobile {
+  @media (max-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+// Typography mixins
+@mixin heading($size: $font-size-xl) {
+  font-size: $size;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  margin-bottom: $spacing-md;
+}
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Transitions
+@mixin transition-base {
+  transition: $transition-base;
+}
+
+@mixin transition-slow {
+  transition: $transition-slow;
+}
+
+// Box shadow
+@mixin box-shadow($shadows...) {
+  box-shadow: $shadows;
+}
+
+// Container
+@mixin container {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+// Button mixins
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-sm $spacing-md;
+  border: none;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  @include transition-base;
+}
+
+@mixin button-primary {
+  @include button-base;
+  background-color: $primary-color;
+  color: $white;
+  
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background-color: transparent;
+  border: 2px solid $primary-color;
+  color: $primary-color;
+  
+  &:hover {
+    background-color: $primary-color;
+    color: $white;
+  }
+}
+
+// Input mixins
+@mixin input-base {
+  padding: $spacing-sm;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  @include transition-base;
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+  }
+}
+
+// Card mixins
+@mixin card {
+  background-color: $white;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+  padding: $spacing-md;
+  @include transition-base;
+  
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+// Media query mixins
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == "sm" {
+    @media (max-width: 576px) { @content; }
+  }
+  @else if $breakpoint == "md" {
+    @media (max-width: 768px) { @content; }
+  }
+  @else if $breakpoint == "lg" {
+    @media (max-width: 992px) { @content; }
+  }
+  @else if $breakpoint == "xl" {
+    @media (max-width: 1200px) { @content; }
+  }
+}
+
+// Animation mixins
+@mixin fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@mixin slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+// Keyframes
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Layout mixins
+@mixin flex($grow: 0, $shrink: 0, $basis: auto) {
+  flex: $grow $shrink $basis;
+}
+
+@mixin display($value) {
+  display: $value;
+}
+
+@mixin flex-direction($value) {
+  flex-direction: $value;
+}
+
+@mixin flex-wrap($value) {
+  flex-wrap: $value;
+}
+
+@mixin justify-content($value) {
+  justify-content: $value;
+}
+
+@mixin align-items($value) {
+  align-items: $value;
+}
+
+@mixin gap($value) {
+  gap: $value;
+}
+
+// Spacing mixins
+@mixin margin($top: 0, $right: null, $bottom: null, $left: null) {
+  margin-top: $top;
+  @if $right != null {
+    margin-right: $right;
+  }
+  @if $bottom != null {
+    margin-bottom: $bottom;
+  }
+  @if $left != null {
+    margin-left: $left;
+  }
+}
+
+@mixin margin-top($value) {
+  margin-top: $value;
+}
+
+@mixin margin-right($value) {
+  margin-right: $value;
+}
+
+@mixin margin-bottom($value) {
+  margin-bottom: $value;
+}
+
+@mixin margin-left($value) {
+  margin-left: $value;
+}
+
+@mixin padding($top: 0, $right: null, $bottom: null, $left: null) {
+  padding-top: $top;
+  @if $right != null {
+    padding-right: $right;
+  }
+  @if $bottom != null {
+    padding-bottom: $bottom;
+  }
+  @if $left != null {
+    padding-left: $left;
+  }
+}
+
+@mixin padding-top($value) {
+  padding-top: $value;
+}
+
+@mixin padding-right($value) {
+  padding-right: $value;
+}
+
+@mixin padding-bottom($value) {
+  padding-bottom: $value;
+}
+
+@mixin padding-left($value) {
+  padding-left: $value;
+}
+
+// Position mixins
+@mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
+  position: $position;
+  @if $top != null {
+    top: $top;
+  }
+  @if $right != null {
+    right: $right;
+  }
+  @if $bottom != null {
+    bottom: $bottom;
+  }
+  @if $left != null {
+    left: $left;
+  }
+}
+
+@mixin top($value) {
+  top: $value;
+}
+
+@mixin right($value) {
+  right: $value;
+}
+
+@mixin bottom($value) {
+  bottom: $value;
+}
+
+@mixin left($value) {
+  left: $value;
+}
+
+// Box model mixins
+@mixin width($value) {
+  width: $value;
+}
+
+@mixin height($value) {
+  height: $value;
+}
+
+@mixin max-width($value) {
+  max-width: $value;
+}
+
+@mixin min-height($value) {
+  min-height: $value;
+}
+
+@mixin box-sizing($value) {
+  box-sizing: $value;
+}
+
+// Border mixins
+@mixin border($width: 1px, $style: solid, $color: $border-color) {
+  border: $width $style $color;
+}
+
+@mixin border-width($top: null, $right: null, $bottom: null, $left: null) {
+  @if $top != null {
+    border-top-width: $top;
+  }
+  @if $right != null {
+    border-right-width: $right;
+  }
+  @if $bottom != null {
+    border-bottom-width: $bottom;
+  }
+  @if $left != null {
+    border-left-width: $left;
+  }
+}
+
+@mixin border-top($width: 1px, $style: solid, $color: $border-color) {
+  border-top: $width $style $color;
+}
+
+@mixin border-right($width: 1px, $style: solid, $color: $border-color) {
+  border-right: $width $style $color;
+}
+
+@mixin border-bottom($width: 1px, $style: solid, $color: $border-color) {
+  border-bottom: $width $style $color;
+}
+
+@mixin border-left($width: 1px, $style: solid, $color: $border-color) {
+  border-left: $width $style $color;
+}
+
+@mixin border-radius($top-left: null, $top-right: null, $bottom-right: null, $bottom-left: null) {
+  @if $top-left != null and $top-right == null and $bottom-right == null and $bottom-left == null {
+    border-radius: $top-left;
+  } @else {
+    border-top-left-radius: $top-left;
+    border-top-right-radius: $top-right;
+    border-bottom-right-radius: $bottom-right;
+    border-bottom-left-radius: $bottom-left;
+  }
+}
+
+@mixin border-color($value) {
+  border-color: $value;
+}
+
+// Typography mixins
+@mixin font-family($values...) {
+  font-family: $values;
+}
+
+@mixin font-size($value) {
+  font-size: $value;
+}
+
+@mixin font-weight($value) {
+  font-weight: $value;
+}
+
+@mixin line-height($value) {
+  line-height: $value;
+}
+
+@mixin color($value) {
+  color: $value;
+}
+
+@mixin text-align($value) {
+  text-align: $value;
+}
+
+@mixin text-decoration($value) {
+  text-decoration: $value;
+}
+
+// Background mixins
+@mixin background-color($value) {
+  background-color: $value;
+}
+
+@mixin background($value) {
+  background: $value;
+}
+
+// Transform mixins
+@mixin transform($value) {
+  transform: $value;
+}
+
+// Transition mixins
+@mixin transition($value) {
+  transition: $value;
+}
+
+// Outline mixins
+@mixin outline($value) {
+  outline: $value;
+}
+
+// Cursor mixins
+@mixin cursor($value) {
+  cursor: $value;
+}
+
+// List style mixins
+@mixin list-style($value) {
+  list-style: $value;
+}
+
+@mixin list-style-type($value) {
+  list-style-type: $value;
+}
+
+// Content mixins
+@mixin content($value) {
+  content: $value;
+}
+
+// Opacity mixins
+@mixin opacity($value) {
+  opacity: $value;
+}
+
+// Object fit mixins
+@mixin object-fit($value) {
+  object-fit: $value;
+}
+
+// Z-index mixins
+@mixin z-index($value) {
+  z-index: $value;
+}
+
+// Overflow mixins
+@mixin overflow($value) {
+  overflow: $value;
+}
+
+// Text shadow mixin
+@mixin text-shadow($value) {
+  text-shadow: $value;
+}
+
+// Resize mixin
+@mixin resize($value) {
+  resize: $value;
+}
+
+// Appearance mixin
+@mixin appearance($value) {
+  appearance: $value;
+  -webkit-appearance: $value;
+  -moz-appearance: $value;
+}
+
+// Media query mixins
+@mixin media-breakpoint-down($breakpoint) {
+  @if $breakpoint == "sm" {
+    @media (max-width: $breakpoint-sm) { @content; }
+  }
+  @else if $breakpoint == "md" {
+    @media (max-width: $breakpoint-md) { @content; }
+  }
+  @else if $breakpoint == "lg" {
+    @media (max-width: $breakpoint-lg) { @content; }
+  }
+  @else if $breakpoint == "xl" {
+    @media (max-width: $breakpoint-xl) { @content; }
+  }
+}
+
+// Typography mixins
+@mixin letter-spacing($value) {
+  letter-spacing: $value;
+}
+
+@mixin font-style($value) {
+  font-style: $value;
+}
+
+// Background mixins
+@mixin background-image($value) {
+  background-image: $value;
+}
+
+// Transition mixins
+@mixin transition($properties...) {
+  $transitions: ();
+  @each $property in $properties {
+    $transitions: append($transitions, $property $transition-base, comma);
+  }
+  transition: $transitions;
+}
+
+// Background mixins
+@mixin background-position($value) {
+  background-position: $value;
+}
+
+// Transform mixins
+@mixin backface-visibility($value) {
+  backface-visibility: $value;
+}
+
+// Typography mixins
+@mixin white-space($value) {
+  white-space: $value;
+}
+
+// Flexbox mixins
+@mixin flex-grow($value) {
+  flex-grow: $value;
+}
+
+// Background mixins
+@mixin background-repeat($value) {
+  background-repeat: $value;
+}
+
+// Typography mixins
+@mixin text-transform($value) {
+  text-transform: $value;
+}
+
+// Box model mixins
+@mixin min-width($value) {
+  min-width: $value;
+}
+
+// Background mixins
+@mixin background-size($width: null, $height: null) {
+  @if $width != null and $height == null {
+    background-size: $width;
+  } @else {
+    background-size: $width $height;
+  }
+}
+
+// Webkit mixins
+@mixin webkit-box-orient($value) {
+  -webkit-box-orient: $value;
+}
+
+@mixin webkit-line-clamp($value) {
+  -webkit-line-clamp: $value;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Touch action mixin
+@mixin touch-action($value) {
+  touch-action: $value;
+}
+
+// Webkit mixins
+@mixin -webkit-box-orient($value) {
+  -webkit-box-orient: $value;
+}
+
+// Typography mixins
+@mixin text-overflow($value) {
+  text-overflow: $value;
+}
+
+// Typography mixins
+@mixin text-indent($value) {
+  text-indent: $value;
+}
+
+// Webkit mixins
+@mixin -webkit-line-clamp($value) {
+  -webkit-line-clamp: $value;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Box model mixins
+@mixin max-height($value) {
+  max-height: $value;
+}
+
+// Typography mixins
+@mixin text-rendering($value) {
+  text-rendering: $value;
+}
+
+// Typography mixins
+@mixin word-spacing($value) {
+  word-spacing: $value;
+}
+
+// Typography mixins
+@mixin writing-mode($value) {
+  writing-mode: $value;
+}
+
+// Typography mixins
+@mixin vertical-align($value) {
+  vertical-align: $value;
+}
+
+// SVG mixins
+@mixin fill($value) {
+  fill: $value;
+} 

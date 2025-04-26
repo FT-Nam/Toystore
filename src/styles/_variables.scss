@@ -1,0 +1,97 @@
+// Colors
+$red: #cf102d;
+$primary-color: #cf102d;
+$secondary-color: #ad0d29;
+$text-color: #333333;
+$gray: #666666;
+$light-gray: #f8f8f8;
+$white: #ffffff;
+$black: #000000;
+$border-color: #e0e0e0;
+$hover-color: #ad0d29;
+$background-light: #f7f7f7;
+$text-muted: #666666;
+$danger-color: #dc3545;
+$success-color: #28a745;
+$primary-hover: #a80d24;
+$gray-light: #f1f1f1;
+$info-color: #17a2b8;
+
+// Typography
+$font-family-base: Arial, sans-serif;
+$font-family-title: "Baloo Tamma 2", Sans-serif;
+$font-family-rubik: "Rubik", Sans-serif;
+$font-family-heading: $font-family-title;
+$font-secondary: $font-family-title;
+$font-size-base: 16px;
+$font-size-sm: 14px;
+$font-size-lg: 18px;
+$font-size-xl: 24px;
+$font-size-2xl: 32px;
+$font-size-3xl: 40px;
+$font-size-4xl: 78px;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-light: 300;
+$line-height-base: 1.5;
+$line-height-tight: 1.2;
+
+// Spacing
+$spacing-xs: 5px;
+$spacing-sm: 10px;
+$spacing-md: 15px;
+$spacing-lg: 20px;
+$spacing-xl: 25px;
+$spacing-2xl: 30px;
+$spacing-3xl: 40px;
+$spacing-4xl: 50px;
+$spacing-5xl: 70px;
+$spacing-6xl: 100px;
+
+// Border
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 20px;
+$border-radius-2xl: 50px;
+
+// Shadows
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.2);
+$shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Container
+$container-max-width: 1240px;
+$container-padding: 15px;
+
+// Transitions
+$transition-base: all 0.3s ease;
+$transition-slow: all 0.5s ease;
+
+// Z-index
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+$z-index-toast: 1080;
+
+// Font family
+$font-family-base: Arial, sans-serif;
+
+// Border radius
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+
+// Shadow
+$shadow-lg: 0px 10px 30px rgba(0, 0, 0, 0.2); 

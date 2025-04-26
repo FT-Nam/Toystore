@@ -1,0 +1,234 @@
+@import './styles/_variables';
+@import './styles/_mixins';
+@import './styles/_base';
+
+// App specific styles
+.App {
+  @include min-height(100vh);
+  @include display(flex);
+  @include flex-direction(column);
+}
+
+.main {
+  @include flex(1);
+  @include padding(20px, null);
+}
+
+* {
+  @include margin(0);
+  @include padding(0);
+  @include box-sizing(border-box);
+}
+
+body {
+  @include font-family(Arial, sans-serif);
+  @include font-size(14px);
+  @include line-height(1.5);
+  @include color($text-color);
+  @include background-color($white);
+}
+
+.container {
+  @include max-width(1200px);
+  @include margin(0, auto);
+  @include padding(0, 15px);
+}
+
+.row {
+  @include display(flex);
+  @include flex-wrap(wrap);
+  @include margin(0, -15px);
+}
+
+.col-3 {
+  @include flex(0 0 25%);
+  @include max-width(25%);
+  @include padding(0, 15px);
+}
+
+.col-9 {
+  @include flex(0 0 75%);
+  @include max-width(75%);
+  @include padding(0, 15px);
+}
+
+@media (max-width: 768px) {
+  .col-3,
+  .col-9 {
+    @include flex(0 0 100%);
+    @include max-width(100%);
+  }
+}
+
+// Header styles
+.header {
+  @include background-color($white);
+  @include box-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  @include position(sticky);
+  @include top(0);
+  @include z-index(1000);
+}
+
+// Footer styles
+.footer {
+  @include background-color($secondary-color);
+  @include color($white);
+  @include padding($spacing-2xl, 0);
+  @include margin-top($spacing-2xl);
+
+  &__container {
+    @include container;
+  }
+
+  &__row {
+    @include display(flex);
+    @include flex-wrap(wrap);
+    @include margin(0, -$spacing-md);
+  }
+
+  &__col {
+    @include flex(0, 0, 25%);
+    @include max-width(25%);
+    @include padding(0, $spacing-md);
+
+    @include media-breakpoint-down(md) {
+      @include flex(0, 0, 50%);
+      @include max-width(50%);
+      @include margin-bottom($spacing-xl);
+    }
+
+    @include media-breakpoint-down(sm) {
+      @include flex(0, 0, 100%);
+      @include max-width(100%);
+    }
+  }
+
+  &__logo {
+    @include margin-bottom($spacing-lg);
+
+    img {
+      @include width(150px);
+      @include height(auto);
+    }
+  }
+
+  &__content {
+    @include margin-bottom($spacing-lg);
+
+    p {
+      @include margin-bottom($spacing-sm);
+      @include line-height($line-height-base);
+    }
+  }
+
+  &__menu {
+    h3 {
+      @include font-size($font-size-lg);
+      @include font-weight($font-weight-bold);
+      @include margin-bottom($spacing-md);
+      @include font-family($font-family-heading);
+    }
+
+    ul {
+      @include list-style(none);
+      @include padding(0);
+      @include margin(0);
+
+      li {
+        @include margin-bottom($spacing-sm);
+
+        a {
+          @include color($white);
+          @include text-decoration(none);
+          @include transition(color);
+
+          &:hover {
+            @include color($hover-color);
+          }
+        }
+      }
+    }
+  }
+
+  &__member {
+    @include margin-top($spacing-2xl);
+    @include padding-top($spacing-xl);
+    @include border-top(1px, solid, rgba($white, 0.1));
+    @include text-align(center);
+
+    p {
+      @include margin-bottom($spacing-sm);
+    }
+
+    a {
+      @include color($white);
+      @include text-decoration(none);
+      @include font-weight($font-weight-bold);
+      @include transition(color);
+
+      &:hover {
+        @include color($hover-color);
+      }
+    }
+  }
+}
+
+// Loading state
+.loading {
+  @include display(flex);
+  @include justify-content(center);
+  @include align-items(center);
+  @include min-height(200px);
+  @include font-size(18px);
+  @include color($gray);
+}
+
+// Error state
+.error {
+  @include display(flex);
+  @include justify-content(center);
+  @include align-items(center);
+  @include min-height(200px);
+  @include color($primary-color);
+  @include text-align(center);
+  @include padding(20px);
+}
+
+// Success message
+.success-message {
+  @include position(fixed);
+  @include bottom(20px);
+  @include left(50%);
+  @include transform(translateX(-50%));
+  @include background-color($primary-color);
+  @include color($white);
+  @include padding(10px, 20px);
+  @include border-radius(4px);
+  @include box-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  @include z-index(1000);
+  @include animation(fadeIn 0.3s ease-in-out);
+}
+
+@keyframes fadeIn {
+  from {
+    @include opacity(0);
+    @include transform(translate(-50%, 20px));
+  }
+  to {
+    @include opacity(1);
+    @include transform(translate(-50%, 0));
+  }
+}
+
+// Responsive adjustments
+@include respond-to(md) {
+  .main {
+    @include padding(15px, null);
+  }
+}
+
+@include respond-to(sm) {
+  .main {
+    @include padding(10px, null);
+  }
+} 

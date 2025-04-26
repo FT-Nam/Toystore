@@ -1,0 +1,267 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.cart-page {
+  @include container;
+  @include padding($spacing-xl, 0);
+
+  h1 {
+    @include margin-bottom($spacing-xl);
+    @include font-size($font-size-2xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+}
+
+.cart-page__content {
+  @include display(flex);
+  @include gap($spacing-xl);
+
+  @include respond-to(md) {
+    @include flex-direction(column);
+  }
+}
+
+.cart-page__items {
+  @include flex(1);
+}
+
+.cart-page__item {
+  @include display(flex);
+  @include gap($spacing-lg);
+  @include padding($spacing-lg);
+  @include background-color($white);
+  @include border-radius($border-radius-md);
+  @include box-shadow($shadow-sm);
+  @include margin-bottom($spacing-lg);
+
+  &:last-child {
+    @include margin-bottom(0);
+  }
+
+  @include respond-to(sm) {
+    @include flex-direction(column);
+  }
+}
+
+.cart-page__item-image {
+  @include width(150px);
+  @include height(150px);
+  @include border-radius($border-radius-sm);
+  @include overflow(hidden);
+
+  @include respond-to(sm) {
+    @include width(100%);
+    @include height(200px);
+  }
+
+  img {
+    @include width(100%);
+    @include height(100%);
+    @include object-fit(cover);
+  }
+}
+
+.cart-page__item-details {
+  @include flex(1);
+  @include display(flex);
+  @include flex-direction(column);
+  @include justify-content(space-between);
+}
+
+.cart-page__item-info {
+  h3 {
+    @include margin(0);
+    @include margin-bottom($spacing-sm);
+    @include font-size($font-size-lg);
+    @include font-weight($font-weight-medium);
+    @include color($text-color);
+  }
+
+  p {
+    @include margin(0);
+    @include margin-bottom($spacing-sm);
+    @include font-size($font-size-base);
+    @include color($text-muted);
+  }
+}
+
+.cart-page__item-price {
+  @include font-size($font-size-lg);
+  @include font-weight($font-weight-semibold);
+  @include color($text-color);
+}
+
+.cart-page__item-actions {
+  @include display(flex);
+  @include align-items(center);
+  @include gap($spacing-md);
+  @include margin-top($spacing-md);
+
+  .quantity-control {
+    @include display(flex);
+    @include align-items(center);
+    @include gap($spacing-sm);
+
+    button {
+      @include width(30px);
+      @include height(30px);
+      @include display(flex);
+      @include align-items(center);
+      @include justify-content(center);
+      @include background-color($background-light);
+      @include border(1px, solid, $border-color);
+      @include border-radius($border-radius-sm);
+      @include cursor(pointer);
+      @include transition(background-color);
+
+      &:hover:not(:disabled) {
+        @include background-color($gray-light);
+      }
+
+      &:disabled {
+        @include opacity(0.5);
+        @include cursor(not-allowed);
+      }
+    }
+
+    input {
+      @include width(50px);
+      @include text-align(center);
+      @include padding($spacing-xs);
+      @include border(1px, solid, $border-color);
+      @include border-radius($border-radius-sm);
+      @include font-size($font-size-base);
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        @include appearance(none);
+        @include margin(0);
+      }
+    }
+  }
+
+  .remove-btn {
+    @include background(none);
+    @include border(none);
+    @include color($danger-color);
+    @include cursor(pointer);
+    @include font-size($font-size-base);
+    @include transition(color);
+
+    &:hover {
+      @include color($danger-hover);
+    }
+  }
+}
+
+.cart-page__summary {
+  @include width(350px);
+  @include padding($spacing-lg);
+  @include background-color($white);
+  @include border-radius($border-radius-md);
+  @include box-shadow($shadow-sm);
+  @include position(sticky);
+  @include top($spacing-xl);
+
+  @include respond-to(md) {
+    @include width(100%);
+    @include position(static);
+  }
+
+  h2 {
+    @include margin(0);
+    @include margin-bottom($spacing-lg);
+    @include font-size($font-size-xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+}
+
+.cart-page__summary-row {
+  @include display(flex);
+  @include justify-content(space-between);
+  @include margin-bottom($spacing-md);
+
+  &:last-child {
+    @include margin-bottom(0);
+    @include margin-top($spacing-lg);
+    @include padding-top($spacing-lg);
+    @include border-top(1px, solid, $border-color);
+    @include font-weight($font-weight-semibold);
+    @include font-size($font-size-lg);
+  }
+}
+
+.cart-page__actions {
+  @include margin-top($spacing-lg);
+  @include display(flex);
+  @include flex-direction(column);
+  @include gap($spacing-md);
+
+  button {
+    @include width(100%);
+    @include padding($spacing-md);
+    @include border-radius($border-radius-sm);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-medium);
+    @include cursor(pointer);
+    @include transition(background-color);
+
+    &.btn-primary {
+      @include background-color($primary-color);
+      @include color($white);
+
+      &:hover {
+        @include background-color($primary-hover);
+      }
+    }
+
+    &.btn-outline {
+      @include background-color($white);
+      @include color($primary-color);
+      @include border(1px, solid, $primary-color);
+
+      &:hover {
+        @include background-color($primary-color);
+        @include color($white);
+      }
+    }
+  }
+}
+
+.cart-page__empty {
+  @include text-align(center);
+  @include padding($spacing-xl, 0);
+
+  h2 {
+    @include margin(0);
+    @include margin-bottom($spacing-md);
+    @include font-size($font-size-2xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+
+  p {
+    @include margin(0);
+    @include margin-bottom($spacing-lg);
+    @include font-size($font-size-base);
+    @include color($text-muted);
+  }
+
+  .btn-primary {
+    @include display(inline-block);
+    @include padding($spacing-md, $spacing-lg);
+    @include background-color($primary-color);
+    @include color($white);
+    @include border-radius($border-radius-sm);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-medium);
+    @include text-decoration(none);
+    @include transition(background-color);
+
+    &:hover {
+      @include background-color($primary-hover);
+    }
+  }
+} 

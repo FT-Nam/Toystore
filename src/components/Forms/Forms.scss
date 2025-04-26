@@ -1,0 +1,266 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.form-container {
+  @include flex-center;
+  min-height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.account-container, .contact-container {
+  background-color: $white;
+  padding: 50px;
+  border-radius: 10px;
+  @include box-shadow($shadow-md);
+  max-width: 500px;
+  width: 100%;
+}
+
+#registerForm {
+  max-width: 800px;
+}
+
+#forgotPasswordForm {
+  width: 600px;
+}
+
+#contactForm {
+  max-width: 900px;
+}
+
+.account-container h2, .contact-container h2 {
+  font-size: 30px;
+  margin-bottom: 25px;
+  color: $gray-dark;
+  text-align: center;
+}
+
+.contact-container h2 {
+  margin-bottom: 8px;
+}
+
+.contact-container p {
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: $gray-dark;
+  text-align: center;
+}
+
+.label-form {
+  font-size: 15px;
+  color: $gray-dark;
+}
+
+.input-form {
+  @include input-base;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 18px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 16px;
+
+  &[disabled] {
+    background-color: #e9ecef;
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.btnForm {
+  @include button-primary;
+  font-size: 17px;
+  padding: 14px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.options {
+  font-size: 15px;
+  text-align: center;
+  margin-top: 20px;
+
+  a {
+    color: $primary-color;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.btn-account {
+  width: 120px;
+}
+
+.form {
+  @include width(100%);
+  @include max-width(600px);
+  @include margin(0, auto);
+  @include padding($spacing-lg);
+  @include background-color($white);
+  @include border-radius($border-radius-md);
+  @include box-shadow($shadow-sm);
+
+  @include respond-to(sm) {
+    @include padding($spacing-md);
+  }
+}
+
+.form__header {
+  @include text-align(center);
+  @include margin-bottom($spacing-xl);
+
+  h2 {
+    @include margin(0);
+    @include margin-bottom($spacing-md);
+    @include font-size($font-size-xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+
+  p {
+    @include margin(0);
+    @include font-size($font-size-base);
+    @include color($text-muted);
+  }
+}
+
+.form__group {
+  @include margin-bottom($spacing-lg);
+
+  label {
+    @include display(block);
+    @include margin-bottom($spacing-sm);
+    @include font-size($font-size-base);
+    @include font-weight($font-weight-medium);
+    @include color($text-color);
+  }
+
+  input,
+  textarea,
+  select {
+    @include width(100%);
+    @include padding($spacing-sm);
+    @include border(1px, solid, $border-color);
+    @include border-radius($border-radius-sm);
+    @include font-size($font-size-base);
+    @include transition(border-color);
+
+    &:focus {
+      @include outline(none);
+      @include border-color($primary-color);
+    }
+  }
+
+  textarea {
+    @include min-height(150px);
+    @include resize(vertical);
+  }
+
+  select {
+    @include appearance(none);
+    @include background-image(url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E"));
+    @include background-repeat(no-repeat);
+    @include background-position(right $spacing-sm center);
+    @include padding-right($spacing-xl);
+  }
+
+  &.error {
+    input,
+    textarea,
+    select {
+      @include border-color($danger-color);
+    }
+
+    .error-message {
+      @include margin-top($spacing-xs);
+      @include font-size($font-size-sm);
+      @include color($danger-color);
+    }
+  }
+}
+
+.form__checkbox {
+  @include display(flex);
+  @include align-items(center);
+  @include gap($spacing-sm);
+  @include margin-bottom($spacing-md);
+
+  input[type="checkbox"] {
+    @include width(16px);
+    @include height(16px);
+    @include margin(0);
+  }
+
+  label {
+    @include margin(0);
+    @include font-size($font-size-base);
+    @include color($text-muted);
+    @include cursor(pointer);
+  }
+}
+
+.form__submit {
+  @include width(100%);
+  @include padding($spacing-md);
+  @include background-color($primary-color);
+  @include color($white);
+  @include border(none);
+  @include border-radius($border-radius-sm);
+  @include font-size($font-size-base);
+  @include font-weight($font-weight-medium);
+  @include cursor(pointer);
+  @include transition(background-color);
+
+  &:hover {
+    @include background-color($primary-hover);
+  }
+
+  &:disabled {
+    @include opacity(0.7);
+    @include cursor(not-allowed);
+  }
+}
+
+.form__footer {
+  @include text-align(center);
+  @include margin-top($spacing-lg);
+  @include color($text-muted);
+
+  a {
+    @include color($primary-color);
+    @include text-decoration(none);
+    @include font-weight($font-weight-medium);
+
+    &:hover {
+      @include text-decoration(underline);
+    }
+  }
+}
+
+.form__success {
+  @include text-align(center);
+  @include padding($spacing-xl, 0);
+
+  .icon {
+    @include font-size($font-size-4xl);
+    @include color($success-color);
+    @include margin-bottom($spacing-lg);
+  }
+
+  h2 {
+    @include margin(0);
+    @include margin-bottom($spacing-md);
+    @include font-size($font-size-xl);
+    @include font-weight($font-weight-semibold);
+    @include color($text-color);
+  }
+
+  p {
+    @include margin(0);
+    @include font-size($font-size-base);
+    @include color($text-muted);
+  }
+} 

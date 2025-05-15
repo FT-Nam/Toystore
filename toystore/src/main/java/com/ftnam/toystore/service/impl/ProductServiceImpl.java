@@ -10,6 +10,7 @@ import com.ftnam.toystore.exception.ErrorCode;
 import com.ftnam.toystore.mapper.ProductMapper;
 import com.ftnam.toystore.repository.CategoryRepository;
 import com.ftnam.toystore.repository.ProductRepository;
+import com.ftnam.toystore.search.service.impl.ProductSearchServiceImpl;
 import com.ftnam.toystore.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
+    private final ProductSearchServiceImpl productSearchService;
 
     @PreAuthorize("hasAuthority('PRODUCT_CREATE')")
     @Override
@@ -36,7 +38,12 @@ public class ProductServiceImpl implements ProductService {
                         .orElseThrow(() -> new AppException(ErrorCode.ID_NOT_EXISTED)))
                 .collect(Collectors.toSet());
         product.setCategories(productsByCategoryId);
-        return productMapper.toProductResponse(productRepository.save(product));
+
+        Product savedProduct = productRepository.save(product);
+
+        productSearchService.saveProduct(savedProduct);
+
+        return productMapper.toProductResponse(savedProduct);
     }
 
     @Override

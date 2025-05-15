@@ -47,18 +47,17 @@ public class SecurityConfig {
                         )
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 )
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ GẮN CORS CHÍNH XÁC TẠI ĐÂY
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
 
-    // ✅ GẮN TẠI ĐÂY thay vì @Bean riêng biệt
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of("http://localhost:3000")); // Frontend
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setMaxAge(3600L); // Cache preflight
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

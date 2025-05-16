@@ -24,8 +24,8 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final String[] PUBLIC_POST_ENDPOINT ={"/user/register", "/auth/login/**", "/auth/refresh", "/auth/logout", "/payments"};
-    private final String[] PUBLIC_GET_ENDPOINT = {"/product/**", "/product-img/**", "/category/**", "/payments/payment-callback"};
+    private final String[] PUBLIC_POST_ENDPOINT ={"/user/register", "/auth/login/**", "/auth/refresh", "/auth/logout", "/payments", "/search/**"};
+    private final String[] PUBLIC_GET_ENDPOINT = {"/product/**", "/product-img/**", "/category/**", "/payments/payment-callback","/search/**"};
 
     @Autowired
     private CustomJwtDecoder jwtDecoder;

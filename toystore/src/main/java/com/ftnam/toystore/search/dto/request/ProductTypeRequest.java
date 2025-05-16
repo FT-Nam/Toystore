@@ -1,4 +1,4 @@
-package com.ftnam.toystore.search.dto.response;
+package com.ftnam.toystore.search.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,14 +11,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductSearchResponse {
-    Long id;
-    String name;
-    String thumbnail;
-    BigDecimal price;
-    Integer discountPercentage;
-    int stock;
+public class ProductTypeRequest {
     boolean isNew;
-    boolean isBestSeller;
     boolean isSale;
+    boolean isBestSeller;
+
+    BigDecimal minPrice;
+
+    BigDecimal maxPrice;
 }

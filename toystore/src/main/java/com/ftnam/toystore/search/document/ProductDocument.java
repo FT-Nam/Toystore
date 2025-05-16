@@ -28,6 +28,8 @@ public class ProductDocument {
     @Field(type = FieldType.Keyword)
     private String brand;
 
+    private String thumbnail;
+
     @Field(type = FieldType.Text, analyzer = "standard")
     private String description;
 

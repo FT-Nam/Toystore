@@ -1,191 +1,169 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { addToCart } from '../../utils/cartUtils';
 import Sidebar from '../layout/Sidebar';
+import Filter from './Filter.js';
+import SpecialCategoryProducts from './SpecialCategoryProducts';
 import './CategoryProducts.scss';
 import '../layout/Sidebar.scss';
 
 const ProductList = () => {
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
-  const type = searchParams.get('type');
-  const searchQuery = searchParams.get('search');
-  const categoryId = searchParams.get('categoryId');
-  const [allProducts, setAllProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [displayProducts, setDisplayProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 20;
-  const [totalPages, setTotalPages] = useState(1);
-  const [categories, setCategories] = useState([]);
-  const [currentCategory, setCurrentCategory] = useState(null);
-
-  // Fetch categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/api/v1/category');
-        const data = await response.json();
-        
-        if (data.code === 1000 && data.value) {
-          setCategories(data.value);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedType, setSelectedType] = useState('');
+  const [activeFilters, setActiveFilters] = useState({
+    priceRange: { min: '', max: '' },
+    isBestSeller: false,
+    isNew: false,
+    isSale: false
+  });
           
-          // If categoryId is present, find the matching category
-          if (categoryId) {
-            const category = data.value.find(cat => cat.id === parseInt(categoryId));
-            setCurrentCategory(category);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-    
-    fetchCategories();
-  }, [categoryId]);
+  // Get search query from URL
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get('search') || '';
+  const typeParam = searchParams.get('type') || '';
 
-  // First fetch all products
-  useEffect(() => {
-    const fetchAllProducts = async () => {
+  // Check if this is a special category page
+  const isSpecialCategory = typeParam === 'new' || typeParam === 'sale' || typeParam === 'best-selling';
+
+  const fetchProducts = useCallback(async (page = 1) => {
       try {
         setLoading(true);
-        const token = localStorage.getItem('accessToken');
-        const headers = token ? {
-          'Authorization': `Bearer ${token}`
-        } : {};
-  
-        // Fetch all products at once with a large size
-        const response = await fetch(`http://localhost:8080/api/v1/product?page=0&size=1000`, {
-          headers: headers
-        });
-  
-        const data = await response.json();
-        console.log(`Received ${data.value ? data.value.length : 0} total products from API`);
-  
-        if (data.code === 1000 && data.value) {
-          // Store all products
-          setAllProducts(data.value);
 
-          // Apply filtering based on type
-          let filtered = [...data.value];
-          
-          console.log('Current URL type parameter:', type);
-          console.log('Current search query:', searchQuery);
-          console.log('Current category ID:', categoryId);
-          
-          // Filter by category if specified
-          if (categoryId) {
-            filtered = data.value.filter(product => 
-              product.categoryIds && product.categoryIds.includes(parseInt(categoryId))
-            );
-            console.log(`After category filtering: ${filtered.length} products in category ${categoryId}`);
-          }
-          
-          // Then filter by type if specified
-          if (type) {
-            console.log('Filtering by type:', type);
-            // Log all flags to check their values
-            console.log('Product flags sample:');
-            if (filtered.length > 0) {
-              const sample = filtered.slice(0, 5);
-              sample.forEach(p => {
-                console.log(`ID: ${p.id}, name: ${p.name}, new: ${p.new}, sale: ${p.sale}, bestSeller: ${p.bestSeller}`);
-              });
-            }
+      // Build query parameters
+      const params = new URLSearchParams({
+        page: page - 1,
+        size: 20
+      });
 
-            if (type === 'new') {
-              filtered = filtered.filter(p => p.new === true);
-              console.log(`Found ${filtered.length} products with new=true`);
-            } 
-            else if (type === 'sale') {
-              filtered = filtered.filter(p => p.sale === true);
-              console.log(`Found ${filtered.length} products with sale=true`);
-            }
-            else if (type === 'best-selling' || type === 'best_selling' || type === 'best_seller') {
-              filtered = filtered.filter(p => p.bestSeller === true);
-              console.log(`Found ${filtered.length} products with bestSeller=true`);
-              console.log('First few best seller products:');
-              filtered.slice(0, 3).forEach(p => {
-                console.log(`ID: ${p.id}, name: ${p.name}`);
-              });
-            }
-            
-            console.log(`After filtering for ${type}: ${filtered.length} products out of ${data.value.length}`);
+      // Determine which API endpoint to use
+      let apiUrl;
+      if (searchQuery) {
+        // If there's a search query
+        if (activeFilters.isNew || activeFilters.isSale || activeFilters.isBestSeller || 
+            activeFilters.priceRange.min || activeFilters.priceRange.max) {
+          // If filters are active, use the filter endpoint
+          params.append('name', searchQuery);
+          params.append('new', activeFilters.isNew);
+          params.append('sale', activeFilters.isSale);
+          params.append('bestSeller', activeFilters.isBestSeller);
+          params.append('minPrice', activeFilters.priceRange.min ? parseFloat(activeFilters.priceRange.min) : 0);
+          params.append('maxPrice', activeFilters.priceRange.max ? parseFloat(activeFilters.priceRange.max) : 1000000000);
+          if (selectedCategory) {
+            params.append('category', selectedCategory);
           }
-          
-          // Then apply search filter if search query exists
-          if (searchQuery) {
-            const query = searchQuery.toLowerCase();
-            console.log('Filtering by search query:', query);
-            
-            filtered = filtered.filter(product => 
-              product.name.toLowerCase().includes(query) || 
-              (product.description && product.description.toLowerCase().includes(query)) ||
-              (product.brand && product.brand.toLowerCase().includes(query))
-            );
-            
-            console.log(`After search filtering: ${filtered.length} products found for query "${searchQuery}"`);
-          }
-          
-          setFilteredProducts(filtered);
-          
-          // Calculate total pages based on filtered products
-          const calculatedTotalPages = Math.ceil(filtered.length / productsPerPage);
-          setTotalPages(calculatedTotalPages > 0 ? calculatedTotalPages : 1);
+          apiUrl = `http://localhost:8080/api/v1/search/product/filter?${params.toString()}`;
         } else {
-          setError('Không thể tải sản phẩm');
+          // If no filters, use the search endpoint
+          apiUrl = `http://localhost:8080/api/v1/search/product?${params.toString()}&name=${encodeURIComponent(searchQuery)}`;
         }
-      } catch (error) {
-        console.error('Fetch error:', error);
-        setError('Không thể tải sản phẩm');
+      } else if (activeFilters.isNew || activeFilters.isSale || activeFilters.isBestSeller || 
+          activeFilters.priceRange.min || activeFilters.priceRange.max) {
+        // If any filters are active without search, use the /type endpoint
+        params.append('new', activeFilters.isNew);
+        params.append('sale', activeFilters.isSale);
+        params.append('bestSeller', activeFilters.isBestSeller);
+        params.append('minPrice', activeFilters.priceRange.min ? parseFloat(activeFilters.priceRange.min) : 0);
+        params.append('maxPrice', activeFilters.priceRange.max ? parseFloat(activeFilters.priceRange.max) : 1000000000);
+        if (selectedCategory) {
+          params.append('category', selectedCategory);
+        }
+        apiUrl = `http://localhost:8080/api/v1/search/product/type?${params.toString()}`;
+      } else {
+        // If no filters and no search, use the basic /product endpoint
+        apiUrl = `http://localhost:8080/api/v1/product?${params.toString()}`;
+      }
+
+      console.log('Calling API:', apiUrl);
+
+      const response = await fetch(apiUrl);
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+          
+      const data = await response.json();
+      console.log('API Response:', data);
+
+      if (data.code === 1000 && Array.isArray(data.value)) {
+        console.log('Setting products:', data.value.length);
+        setProducts(data.value);
+          
+        // Use pagination info from API response
+        if (data.pagination) {
+          const { totalElements: total, size } = data.pagination;
+          setTotalElements(total);
+          setTotalPages(Math.ceil(total / size));
+          setCurrentPage(page);
+        } else {
+          // Fallback if pagination info is not available
+          const totalItems = data.value.length;
+          setTotalElements(totalItems);
+          setTotalPages(Math.ceil(totalItems / 20));
+          setCurrentPage(page);
+        }
+      } else {
+        console.log('Invalid data structure:', data);
+        setProducts([]);
+        setTotalPages(0);
+        setTotalElements(0);
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError(err.message);
+      setProducts([]);
+      setTotalPages(0);
+      setTotalElements(0);
       } finally {
         setLoading(false);
       }
-    };
-  
-    fetchAllProducts();
-  }, [type, searchQuery, categoryId]);
+  }, [selectedCategory, activeFilters.isNew, activeFilters.isSale, activeFilters.isBestSeller, activeFilters.priceRange.min, activeFilters.priceRange.max, searchQuery]);
 
   useEffect(() => {
-    setCurrentPage(1); // reset về trang đầu tiên khi thay đổi loại sản phẩm hoặc tìm kiếm
-  }, [type, searchQuery, categoryId]);
-  
-  
-  // Handle pagination separately
-  useEffect(() => {
-    const fetchProductImages = async (products) => {
-      try {
-        // Get the current page of products
-        const indexOfLastProduct = currentPage * productsPerPage;
-        const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-        const currentPageProducts = products.slice(indexOfFirstProduct, indexOfFirstProduct + productsPerPage);
-        
-        console.log(`Showing page ${currentPage}: products ${indexOfFirstProduct+1}-${Math.min(indexOfLastProduct, products.length)} of ${products.length}`);
-        
-        // Fetch images for the current page of products
-        const productsWithImages = await Promise.all(
-          currentPageProducts.map(async (product) => {
-            const imageRes = await fetch(`http://localhost:8080/api/v1/product-img/product/${product.id}`);
-            const imageData = await imageRes.json();
-            return {
-              ...product,
-              images: imageData.code === 1000 ? imageData.value : []
-            };
-          })
-        );
-        
-        setDisplayProducts(productsWithImages);
-      } catch (error) {
-        console.error('Error fetching images:', error);
-      }
-    };
-    
-    if (filteredProducts.length > 0) {
-      fetchProductImages(filteredProducts);
+    if (!isSpecialCategory) {
+      console.log('Effect triggered with:', {
+        search: location.search,
+        category: selectedCategory,
+        type: selectedType,
+        filters: activeFilters
+      });
+      fetchProducts(1);
     }
-  }, [filteredProducts, currentPage]);
+  }, [location.search, selectedCategory, selectedType, activeFilters, isSpecialCategory, fetchProducts]);
+
+  // If it's a special category page, render SpecialCategoryProducts
+  if (isSpecialCategory) {
+    return <SpecialCategoryProducts />;
+  }
+
+  const handlePageChange = (newPage) => {
+    console.log('Changing to page:', newPage);
+    fetchProducts(newPage);
+  };
+
+  const handleCategoryChange = (category) => {
+    console.log('Category changed to:', category);
+    setSelectedCategory(category);
+    setSelectedType('');
+  };
+
+  const handleTypeChange = (type) => {
+    console.log('Type changed to:', type);
+    setSelectedType(type);
+  };
+        
+  const handleFilterChange = (filters) => {
+    console.log('Filters changed to:', filters);
+    setActiveFilters(filters);
+  };
 
   const handleAddToCart = async (productId) => {
     try {
@@ -199,37 +177,43 @@ const ProductList = () => {
     navigate(`/product/${productId}`);
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+
+  console.log('Rendering products:', products);
 
   return (
     <div className="category-products">
       <div className="container">
         <div className="row">
           <div className="col-3">
-            <Sidebar />
+            <Sidebar
+              selectedCategory={selectedCategory}
+              selectedType={selectedType}
+              onCategoryChange={handleCategoryChange}
+              onTypeChange={handleTypeChange}
+            />
+            <Filter onFilterChange={handleFilterChange} />
           </div>
           <div className="col-9">
             <div className="category-header">
               <h1>
-                {currentCategory && currentCategory.name}
-                {!currentCategory && type === 'new' && 'Sản phẩm mới'}
-                {!currentCategory && type === 'sale' && 'Sản phẩm giảm giá'}
-                {!currentCategory && (type === 'best-selling' || type === 'best_selling' || type === 'best_seller') && 'Sản phẩm bán chạy'}
-                {!currentCategory && searchQuery && !type && `Kết quả tìm kiếm cho "${searchQuery}"`}
-                {!currentCategory && searchQuery && type && ` - Tìm kiếm cho "${searchQuery}"`}
+                {selectedCategory && selectedCategory.name}
+                {!selectedCategory && searchQuery && `Kết quả tìm kiếm cho "${searchQuery}"`}
               </h1>
               <div className="category-description">
-                {currentCategory && `Có ${filteredProducts.length} sản phẩm trong danh mục này`}
-                {!currentCategory && type === 'new' && 'Khám phá những sản phẩm mới nhất của chúng tôi'}
-                {!currentCategory && type === 'sale' && 'Những ưu đãi hấp dẫn đang chờ đón bạn'}
-                {!currentCategory && (type === 'best-selling' || type === 'best_selling' || type === 'best_seller') && 'Những sản phẩm được yêu thích nhất'}
-                {!currentCategory && searchQuery && `Đã tìm thấy ${filteredProducts.length} sản phẩm`}
+                {selectedCategory && `Có ${totalElements} sản phẩm trong danh mục này`}
+                {!selectedCategory && searchQuery && `Đã tìm thấy ${totalElements} sản phẩm`}
               </div>
             </div>
             <div className="product-grid">
-              {displayProducts.length > 0 ? (
-                displayProducts.map((product) => (
+              {products.length > 0 ? (
+                products.map((product) => (
                 <div 
                   key={product.id} 
                   className="product-card"
@@ -237,25 +221,23 @@ const ProductList = () => {
                   style={{ cursor: 'pointer' }}
                 >
                   <div className="product-image">
-                    {product.images && product.images.length > 0 && (
-                      <img src={product.images[0].imgUrl} alt={product.name} />
-                    )}
-                    {product.discount > 0 && (
+                      <img src={product.thumbnail} alt={product.name} />
+                      {product.discountPercentage > 0 && (
                       <div className="discount-badge">
-                        -{product.discount}%
+                          -{product.discountPercentage}%
                       </div>
                     )}
                   </div>
                   <div className="product-info">
                       <h3 className="product-title">{product.name}</h3>
                     <div className="product-price">
-                      {product.discount > 0 ? (
+                        {product.discountPercentage > 0 ? (
                         <>
                           <span className="original-price">
                             {product.price.toLocaleString('vi-VN')}đ
                           </span>
                           <span className="discounted-price">
-                            {(product.price * (1 - product.discount / 100)).toLocaleString('vi-VN')}đ
+                              {(product.price * (1 - product.discountPercentage / 100)).toLocaleString('vi-VN')}đ
                           </span>
                         </>
                       ) : (
@@ -283,76 +265,19 @@ const ProductList = () => {
             {totalPages > 1 && (
               <div className="pagination">
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentPage(prev => Math.max(prev - 1, 1));
-                  }}
+                  onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
                 >
-                  &laquo;
+                  Previous
                 </button>
-                
-                {/* Improved pagination display logic */}
-                {(() => {
-                  // Always show first page, last page, current page, and pages around current
-                  const pageNumbers = [];
-                  const rangeSize = 1; // How many pages to show on each side of current page
-                  
-                  // Always add first page
-                  pageNumbers.push(1);
-                  
-                  // Calculate range around current page
-                  const startRange = Math.max(2, currentPage - rangeSize);
-                  const endRange = Math.min(totalPages - 1, currentPage + rangeSize);
-                  
-                  // Add ellipsis after first page if needed
-                  if (startRange > 2) {
-                    pageNumbers.push('...');
-                  }
-                  
-                  // Add pages around current page
-                  for (let i = startRange; i <= endRange; i++) {
-                    pageNumbers.push(i);
-                  }
-                  
-                  // Add ellipsis before last page if needed
-                  if (endRange < totalPages - 1) {
-                    pageNumbers.push('...');
-                  }
-                  
-                  // Add last page if not already included
-                  if (totalPages > 1) {
-                    pageNumbers.push(totalPages);
-                  }
-                  
-                  return pageNumbers.map((number, index) => {
-                    if (number === '...') {
-                      return <span key={`ellipsis-${index}`} className="ellipsis">...</span>;
-                    }
-                    
-                    return (
-                  <button
-                    key={number}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCurrentPage(number);
-                    }}
-                    className={currentPage === number ? 'active' : ''}
-                  >
-                    {number}
-                  </button>
-                    );
-                  });
-                })()}
-                
+                <span>
+                  Page {currentPage} of {totalPages}
+                </span>
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentPage(prev => Math.min(prev + 1, totalPages));
-                  }}
+                  onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
                 >
-                  &raquo;
+                  Next
                 </button>
               </div>
             )}

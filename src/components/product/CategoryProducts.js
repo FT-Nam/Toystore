@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { addToCart } from '../../utils/cartUtils';
 import Sidebar from '../layout/Sidebar';
+import Filter from './Filter.js';
 import './CategoryProducts.scss';
 
 const CategoryProducts = () => {
@@ -12,63 +13,125 @@ const CategoryProducts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 20;
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const [activeFilters, setActiveFilters] = useState({
+    priceRange: { min: '', max: '' },
+    isBestSeller: false,
+    isNew: false,
+    isSale: false
+  });
+
+  const fetchProducts = async (page = 1) => {
+    try {
+      setLoading(true);
+
+      // Build query parameters
+      const params = new URLSearchParams({
+        page: page - 1,
+        size: 20,
+        new: activeFilters.isNew,
+        sale: activeFilters.isSale,
+        bestSeller: activeFilters.isBestSeller,
+        minPrice: activeFilters.priceRange.min ? parseFloat(activeFilters.priceRange.min) : 0,
+        maxPrice: activeFilters.priceRange.max ? parseFloat(activeFilters.priceRange.max) : 1000000000
+      });
+
+      // Determine which API endpoint to use
+      let apiUrl;
+      if (activeFilters.isNew || activeFilters.isSale || activeFilters.isBestSeller || 
+          activeFilters.priceRange.min || activeFilters.priceRange.max) {
+        // If any filters are active, use the /type endpoint
+        params.append('category', categoryId);
+        apiUrl = `http://localhost:8080/api/v1/search/product/type?${params.toString()}`;
+      } else {
+        // If no filters, use the category endpoint
+        apiUrl = `http://localhost:8080/api/v1/product/category/${categoryId}?${params.toString()}`;
+      }
+
+      console.log('Calling API:', apiUrl);
+
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+
+      const data = await response.json();
+      console.log('API Response:', data);
+
+      if (data.code === 1000 && Array.isArray(data.value)) {
+        setProducts(data.value);
+        if (data.pagination) {
+          const { totalElements: total, size } = data.pagination;
+          setTotalElements(total);
+          setTotalPages(Math.ceil(total / size));
+          setCurrentPage(page);
+        }
+      } else {
+        setProducts([]);
+        setTotalPages(0);
+        setTotalElements(0);
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError(err.message);
+      setProducts([]);
+      setTotalPages(0);
+      setTotalElements(0);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchCategoryAndProducts = async () => {
+    const fetchCategoryName = async () => {
       try {
-      
-        // Fetch category name
-        const categoryResponse = await fetch(`http://localhost:8080/api/v1/category/${categoryId}`, {
-        });
+        const categoryResponse = await fetch(`http://localhost:8080/api/v1/category/${categoryId}`);
         const categoryData = await categoryResponse.json();
-        console.log(categoryData);
         
         if (categoryData.code === 1000 && categoryData.value) {
           setCategoryName(categoryData.value.categoryName);
         }
-        
-        // Fetch products
-        const response = await fetch(`http://localhost:8080/api/v1/product/category/${categoryId}`, {
-        });
-        const data = await response.json();
-        
-        if (data.code === 1000 && data.value) {
-          // Use thumbnail directly from products
-          setProducts(data.value);
-        } else {
-          setError('Không thể tải sản phẩm');
-        }
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Không thể tải dữ liệu');
-      } finally {
-        setLoading(false);
+        console.error('Error fetching category:', error);
+        setError('Không thể tải thông tin danh mục');
       }
     };
 
-    fetchCategoryAndProducts();
+    fetchCategoryName();
   }, [categoryId]);
 
+  useEffect(() => {
+    fetchProducts(1);
+  }, [categoryId, activeFilters]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) {
+      console.warn(`Page ${newPage} is out of bounds. Total pages: ${totalPages}`);
+      return;
+    }
+    console.log('Changing to page:', newPage);
+    fetchProducts(newPage);
+  };
+
+  const handleFilterChange = (filters) => {
+    console.log('Filters changed to:', filters);
+    setActiveFilters(filters);
+  };
+
   const handleAddToCart = async (e, productId) => {
-    e.stopPropagation(); // Prevent navigation when clicking add to cart
-    const result = await addToCart(productId);
-    if (result.success) {
-      console.log('Đã thêm sản phẩm vào giỏ hàng');
-    } else {
-      setError(result.error);
+    e.stopPropagation();
+    try {
+      await addToCart(productId, 1);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      setError(error.message);
     }
   };
 
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
   };
-
-  // Calculate pagination
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-  const totalPages = Math.ceil(products.length / productsPerPage);
 
   if (loading) {
     return <div className="loading">Đang tải...</div>;
@@ -82,14 +145,19 @@ const CategoryProducts = () => {
     <div className="category-page">
       <div className="category-page__sidebar">
         <Sidebar />
+        <Filter onFilterChange={handleFilterChange} />
       </div>
       <div className="category-page__content">
         <div className="category-products">
           <div className="category-header">
             <h1>{categoryName}</h1>
+            <div className="category-description">
+              Có {totalElements} sản phẩm trong danh mục này
+            </div>
           </div>
           <div className="product-grid">
-            {currentProducts.map((product) => (
+            {products.length > 0 ? (
+              products.map((product) => (
               <div 
                 key={product.id} 
                 className="product-card"
@@ -98,22 +166,22 @@ const CategoryProducts = () => {
               >
                 <div className="product-image">
                   <img src={product.thumbnail || '/default-image.jpg'} alt={product.name} />
-                  {product.discount > 0 && (
+                    {product.discountPercentage > 0 && (
                     <div className="discount-badge">
-                      -{product.discount}%
+                        -{product.discountPercentage}%
                     </div>
                   )}
                 </div>
                 <div className="product-info">
                   <h3 className="product-title">{product.name}</h3>
                   <div className="product-price">
-                    {product.discount > 0 ? (
+                      {product.discountPercentage > 0 ? (
                       <>
                         <span className="original-price">
                           {product.price.toLocaleString('vi-VN')}đ
                         </span>
                         <span className="discounted-price">
-                          {(product.price * (1 - product.discount / 100)).toLocaleString('vi-VN')}đ
+                            {(product.price * (1 - product.discountPercentage / 100)).toLocaleString('vi-VN')}đ
                         </span>
                       </>
                     ) : (
@@ -128,30 +196,29 @@ const CategoryProducts = () => {
                   </button>
                 </div>
               </div>
-            ))}
+              ))
+            ) : (
+              <div className="no-products">
+                <p>Không tìm thấy sản phẩm nào</p>
+              </div>
+            )}
           </div>
           {totalPages > 1 && (
             <div className="pagination">
               <button
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
-                &laquo;
+                Previous
               </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-                <button
-                  key={number}
-                  onClick={() => setCurrentPage(number)}
-                  className={currentPage === number ? 'active' : ''}
-                >
-                  {number}
-                </button>
-              ))}
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
               <button
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
               >
-                &raquo;
+                Next
               </button>
             </div>
           )}

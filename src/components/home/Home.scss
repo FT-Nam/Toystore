@@ -409,7 +409,6 @@
 
 .main-content {
   @include margin-top(40px);
-  @include display(flex);
   @include justify-content(center);
   @include width(100%);
   @include max-width(1600px);

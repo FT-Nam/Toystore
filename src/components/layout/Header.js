@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.scss';
 import { authFetch } from '../../utils/authFetch';
@@ -11,6 +11,12 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const [showCart, setShowCart] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimeoutRef = useRef(null);
+  const searchRef = useRef(null);
   const navigate = useNavigate();
 
   // Hàm để decode JWT token
@@ -335,6 +341,78 @@ const Header = () => {
     }
   };
 
+  // Thêm useEffect để xử lý click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSearchResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleSearch = async (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    
+    // Clear previous timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    if (value.trim().length > 0) {
+      // Debounce search request
+      searchTimeoutRef.current = setTimeout(async () => {
+        // Set loading state only when we're about to make the API call
+        setIsSearching(true);
+        try {
+          // Chỉ loại bỏ khoảng trắng thừa, giữ nguyên dấu tiếng Việt
+          const searchQuery = value.trim();
+          const response = await fetch(`http://localhost:8080/api/v1/search/product?name=${encodeURIComponent(searchQuery)}`, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          const data = await response.json();
+          
+          if (data.code === 1000 && data.value) {
+            setSearchResults(data.value);
+            setShowSearchResults(true);
+          } else {
+            setSearchResults([]);
+          }
+        } catch (error) {
+          console.error('Error searching products:', error);
+          setSearchResults([]);
+        } finally {
+          setIsSearching(false);
+        }
+      }, 300); // 300ms delay
+    } else {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      setIsSearching(false); // Ensure loading is off when input is empty
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/product?search=${encodeURIComponent(searchTerm.trim())}`);
+      setShowSearchResults(false);
+    }
+  };
+
+  const handleResultClick = (productId) => {
+    navigate(`/product/${productId}`);
+    setShowSearchResults(false);
+    setSearchTerm('');
+  };
+
   return (
     <header className="header">
       <div className="header__top-container">
@@ -348,21 +426,23 @@ const Header = () => {
               />
             </Link>
 
-            <div className="header__search">
-              <form action="/product" method="GET" onSubmit={(e) => {
-                e.preventDefault();
-                const searchInput = e.target.elements.search.value.trim();
-                if (searchInput) {
-                  navigate(`/product?search=${encodeURIComponent(searchInput)}`);
-                }
-              }}>
+            <div className="header__search" ref={searchRef}>
+              <form onSubmit={handleSearchSubmit} className="search-form">
+                <div className="search-input-wrapper">
                 <input
                   className="header__search-input"
-                  name="search"
                   type="text"
                   placeholder="Hãy nhập từ khóa để tìm kiếm"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    onFocus={() => searchTerm.trim() && setShowSearchResults(true)}
                   required
                 />
+                  {isSearching && (
+                    <div className="search-loading">
+                      <div className="spinner"></div>
+                    </div>
+                  )}
                 <button type="submit" className="header__search-btn">
                   <svg
                     className="icon icon-search-bar"
@@ -393,6 +473,41 @@ const Header = () => {
                     </defs>
                   </svg>
                 </button>
+                </div>
+                {showSearchResults && searchResults.length > 0 && (
+                  <div className="search-results">
+                    {searchResults.map((product) => (
+                      <div
+                        key={product.id}
+                        className="search-result-item"
+                        onClick={() => handleResultClick(product.id)}
+                      >
+                        <img
+                          src={product.thumbnail || `http://localhost:8080/api/v1/product-img/thumbnail/${product.id}`}
+                          alt={product.name}
+                          className="search-result-image"
+                        />
+                        <div className="search-result-info">
+                          <h4 className="search-result-name">{product.name}</h4>
+                          <div className="search-result-price">
+                            {product.discount_percentage > 0 ? (
+                              <>
+                                <span className="original-price">
+                                  {product.price.toLocaleString()}đ
+                                </span>
+                                <span className="discounted-price">
+                                  {(product.price * (1 - product.discount_percentage / 100)).toLocaleString()}đ
+                                </span>
+                              </>
+                            ) : (
+                              <span>{product.price.toLocaleString()}đ</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </form>
             </div>
 

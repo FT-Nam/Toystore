@@ -1,0 +1,157 @@
+.filter {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+  margin-top: 40px;
+
+  &__section {
+    margin-bottom: 24px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+
+  &__price-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .price-input {
+    position: relative;
+    flex: 1;
+
+    input {
+      width: 100%;
+      padding: 8px 12px;
+      padding-right: 30px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: #cf102d;
+      }
+
+      &::placeholder {
+        color: #999;
+      }
+    }
+
+    &__currency {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      font-size: 14px;
+    }
+  }
+
+  .price-separator {
+    color: #666;
+    font-size: 14px;
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+      display: none;
+
+      &:checked + .filter__option-label {
+        color: #cf102d;
+
+        i {
+          color: #cf102d;
+        }
+
+        .filter__count {
+          color: #cf102d;
+        }
+      }
+    }
+  }
+
+  &__option-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+    transition: color 0.2s;
+
+    i {
+      font-size: 16px;
+      color: #999;
+      transition: color 0.2s;
+    }
+
+    &:hover {
+      color: #cf102d;
+
+      i {
+        color: #cf102d;
+      }
+
+      .filter__count {
+        color: #cf102d;
+      }
+    }
+  }
+
+  &__count {
+    color: #999;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+
+  &__actions {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+  }
+
+  &__apply-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #cf102d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #a00d23;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+} 
